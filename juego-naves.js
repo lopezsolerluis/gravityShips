@@ -3,9 +3,16 @@ class Vec {
       this.x = x;
       this.y = y;
     }
+    static randomVector (xMin, xMax, yMin, yMax) {
+      return new Vec(Math.random()*(xMax-xMin) + xMin, Math.random()*(yMax-yMin) + yMin)
+    }
     static fromPolar (rho, theta) {
       return new Vec (rho * Math.cos(theta), rho * Math.sin(theta));
     } 
+    static randomPolarVector (origin, rhoMin, rhoMax, thetaMin, thetaMax) {
+      let vector = Vec.fromPolar(Math.random()*(rhoMax-rhoMin) + rhoMin, Math.random()*(thetaMax-thetaMin) + thetaMin);
+      return vector.plus(origin);
+    }    
     plus (other) {
       return new Vec(this.x + other.x, this.y + other.y);
     }
@@ -154,10 +161,6 @@ sol.onload = () => solRadius = sol.height / 2 ;
 sol.src = "Sun-2.png";
 let center = new Vec(window.innerWidth/2, window.innerHeight/2);
 
-function randomPolarVector (origin, rhoMin, rhoMax, thetaMin, thetaMax) {
-  let vector = Vec.fromPolar(Math.random()*(rhoMax-rhoMin) + rhoMin, Math.random()*(thetaMax-thetaMin) + thetaMin);
-  return vector.plus(origin);
-}
 
 let missiles = [];
 let players = [];
@@ -168,13 +171,13 @@ function start() {
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
 
-    players.push( new Player (randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
+    players.push( new Player (Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
                               Math.random()*2*Math.PI, 
-                              new Vec(Math.random()*2-1, Math.random()*2-1), 
+                              Vec.randomVector(-1, 1, -1, 1),
                               0, ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"]) );
-    players.push( new Player (randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
+    players.push( new Player (Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
                               Math.random()*2*Math.PI, 
-                              new Vec(Math.random()*2-1, Math.random()*2-1), 
+                              Vec.randomVector(-1, 1, -1, 1),
                               1, ["a", "d", "s", "w"]) );
 
     dibujar(canvas);
