@@ -60,7 +60,7 @@ class Mobile {
   }
 }
 
-let colors = ['red', 'cyan'];
+let colors = ['Red', 'cyan'];
 
 class Player extends Mobile {
   constructor (pos, dir, vel, shipNumber, playerKeys) {
