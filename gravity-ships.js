@@ -61,7 +61,7 @@ class Mobile {
     this.updatePosition(deltaT);
   }
   tooCloseToSun () {
-    return this.pos.distancia(center) < solRadius;
+    return this.pos.distancia(center) <= solRadius + this.radius;
   }
   tooCloseTo (other) {
     return this.pos.distancia(other.pos) < this.radius + other.radius;
@@ -91,7 +91,7 @@ class Player extends Mobile {
     this.canShoot = true;
 
     this.energy = 100;
-    this.explotionDuration = 40;
+    this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
 
@@ -132,6 +132,9 @@ class Player extends Mobile {
     }
   }
   explodes () {
+    this.dead = true;
+  }
+  burns () {
     this.dead = true;
   }
 }
@@ -204,6 +207,10 @@ function dibujar(canvas, time) {
        // Players
     for (let player of players) {
       if (!player.dead) {
+        if (player.tooCloseToSun()) {
+          player.burns();
+          continue;
+        }
         let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
         if (missile) {
           missile.explodes();
