@@ -154,23 +154,28 @@ sol.onload = () => solRadius = sol.height / 2 ;
 sol.src = "Sun-2.png";
 let center = new Vec(window.innerWidth/2, window.innerHeight/2);
 
-let player0 = new Player (new Vec(200,200), Math.random()*2*Math.PI, 
-                          new Vec(Math.random()*6-3, Math.random()*6-3), 
-                          0, ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"]);
-let player1 = new Player (new Vec(Math.random()*window.innerWidth, Math.random()*innerHeight), 
-                          Math.random()*2*Math.PI, 
-                          new Vec(Math.random()*6-3, Math.random()*6-3), 
-                          1, ["a", "d", "s", "w"]);
-
+function randomPolarVector (origin, rhoMin, rhoMax, thetaMin, thetaMax) {
+  let vector = Vec.fromPolar(Math.random()*(rhoMax-rhoMin) + rhoMin, Math.random()*(thetaMax-thetaMin) + thetaMin);
+  return vector.plus(origin);
+}
 
 let missiles = [];
-let players = [player0, player1];
+let players = [];
 
 function start() {
     let canvasElement = document.getElementById("canvas");
     let canvas = canvasElement.getContext("2d");
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
+
+    players.push( new Player (randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
+                              Math.random()*2*Math.PI, 
+                              new Vec(Math.random()*2-1, Math.random()*2-1), 
+                              0, ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"]) );
+    players.push( new Player (randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
+                              Math.random()*2*Math.PI, 
+                              new Vec(Math.random()*2-1, Math.random()*2-1), 
+                              1, ["a", "d", "s", "w"]) );
 
     dibujar(canvas);
 }
