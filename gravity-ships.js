@@ -44,7 +44,8 @@ class Mobile {
   }
   acceleration () {
     let vectorToSun = center.minus(this.pos);
-    this.accel = vectorToSun.times( 10 / Math.pow(vectorToSun.magnitude, 3) );
+    // if distance < 2, use 2 (¿Why? I don't know)
+    this.accel = vectorToSun.times( 10 / Math.pow (Math.max(vectorToSun.magnitude, 2), 3) );
   }
   updatePosition (deltaT) {
     let newPos = this.pos.plus(this.vel.times(.1*deltaT));
@@ -81,9 +82,11 @@ class Player extends Mobile {
     this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
     this.shipOff = new Image();
     this.shipOn = new Image();
+    this.shipBurning = new Image();
     this.shipOn.onload = () => this.radius = this.shipOn.height / 2;
     this.shipOff.src = `ships/ship-${shipNumber}-off.png`;
     this.shipOn.src = `ships/ship-${shipNumber}-on.png`;
+    this.shipBurning.src = `ships/ship-${shipNumber}-burning.png`;
 
     for (let k of this.keys) allKeys[k] = false;
 
@@ -113,6 +116,11 @@ class Player extends Mobile {
       canvas.globalAlpha = this.timeLeft/this.explotionDuration;
     } 
     drawImage(ship, this.pos, this.dir, canvas);
+    if (this.dead) {
+      canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
+      drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
+      this.dir+Math.random()*.02-.01, canvas);
+    }
     if (this.dead) {
       canvas.restore();
     }
