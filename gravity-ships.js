@@ -88,6 +88,8 @@ class Player extends Mobile {
     this.shootingInterval = 1000;
     this.canShoot = true;
 
+    this.energy = 100;
+
   }    
   updateVelocity (deltaT) {
     if (allKeys[this.keys[2]]) {
@@ -183,8 +185,6 @@ function dibujar(canvas, time) {
   if (lastTime) {
     canvas.clearRect(0,0,window.innerWidth,window.innerHeight);
     
-    drawImage(sol, center, 0, canvas);
-    
     let deltaT = Math.min(time-lastTime, 100);
        // Players
     for (let player of players) {
@@ -211,7 +211,10 @@ function dibujar(canvas, time) {
       } 
       missile.move(deltaT);
       missile.redraw(canvas);
-    }        
+    }
+    
+    drawImage(sol, center, 0, canvas);
+            
   }
   lastTime = time;
   requestAnimationFrame( time => dibujar(canvas, time) );    
