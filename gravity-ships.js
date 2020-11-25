@@ -34,8 +34,6 @@ class Vec {
     }
   }
 
-const allKeys = {};
-
 class Mobile {
   constructor (pos, vel) {
     this.pos = pos ?? Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI);
@@ -72,6 +70,7 @@ class Mobile {
 let colors = ['Red', 'cyan'];
 let KeysOfPlayers = [["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"],
                      ["a", "d", "s", "w"]];
+const allKeys = {};
 
 class Player extends Mobile {
   constructor (shipNumber, playerKeys, pos, dir, vel) {
@@ -93,11 +92,15 @@ class Player extends Mobile {
     this.shootingInterval = 1000;
     this.canShoot = true;
 
+    this.birthTime = 100;
+    this.birthPulses = 4;
+    this.opacityIncrement = this.birthPulses / this.birthTime;
+    this.opacity = 0;
+
     this.energy = 100;
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
-
   }    
   updateVelocity (deltaT) {
     if (allKeys[this.keys[2]] && !this.dead) {
@@ -114,14 +117,20 @@ class Player extends Mobile {
     if (this.dead) {
       canvas.save();
       canvas.globalAlpha = this.timeLeft/this.explotionDuration;
-    } 
+    } else if (this.birthTime) {
+      canvas.save();
+      this.opacity += this.opacityIncrement;
+      canvas.globalAlpha = this.opacity;
+      if (this.opacity <= 0 || this.opacity >= 1) this.opacityIncrement *= -1; 
+      this.birthTime--;
+    }
     drawImage(ship, this.pos, this.dir, canvas);
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
       drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
       this.dir+Math.random()*.02-.01, canvas);
     }
-    if (this.dead) {
+    if (this.dead || this.birthTime >= -10) {
       canvas.restore();
     }
   }
@@ -153,8 +162,8 @@ class Missile extends Mobile {
     this.radius = 7;
     this.shipOwner = shipNumber;
     this.color = colors[shipNumber];
-    this.colorPhase = 0;
-    this.colorIncrement = .02;
+    this.colorPhase = 0.1;
+    this.colorIncrement = .01;
     this.explotionDuration = 40;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
@@ -172,8 +181,7 @@ class Missile extends Mobile {
     canvas.strokeStyle = `rgba(255, 255, 255, ${this.colorPhase})`;
     canvas.stroke();
     this.colorPhase += this.colorIncrement;
-    if (this.colorPhase <= 0.1) this.colorIncrement = +0.01;
-    if (this.colorPhase >= 0.5) this.colorIncrement = -0.01;
+    if (this.colorPhase <= 0.1 || this.colorPhase >= 0.5) this.colorIncrement *= -1;
     if (this.dead) {
       canvas.restore();
     }
