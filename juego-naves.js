@@ -10,7 +10,8 @@ class Vec {
       return new Vec (rho * Math.cos(theta), rho * Math.sin(theta));
     } 
     static randomPolarVector (origin, rhoMin, rhoMax, thetaMin, thetaMax) {
-      let vector = Vec.fromPolar(Math.random()*(rhoMax-rhoMin) + rhoMin, Math.random()*(thetaMax-thetaMin) + thetaMin);
+      let vector = Vec.fromPolar(Math.random()*(rhoMax-rhoMin) + rhoMin, 
+                                 Math.random()*(thetaMax-thetaMin) + thetaMin);
       return vector.plus(origin);
     }    
     plus (other) {
@@ -37,8 +38,8 @@ const allKeys = {};
 
 class Mobile {
   constructor (pos, vel) {
-    this.pos = pos;
-    this.vel = vel;    
+    this.pos = pos ?? Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI);
+    this.vel = vel ?? Vec.randomVector(-1, 1, -1, 1);
     this.accel;
   }
   acceleration () {
@@ -70,9 +71,9 @@ class Mobile {
 let colors = ['Red', 'cyan'];
 
 class Player extends Mobile {
-  constructor (pos, dir, vel, shipNumber, playerKeys) {
+  constructor (shipNumber, playerKeys, pos, dir, vel) {
     super(pos, vel);
-    this.dir = dir;
+    this.dir = dir ?? Math.random()*2*Math.PI;
     this.shipNumber = shipNumber;
     this.score = 0;
     this.keys = playerKeys;
@@ -171,14 +172,8 @@ function start() {
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
 
-    players.push( new Player (Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
-                              Math.random()*2*Math.PI, 
-                              Vec.randomVector(-1, 1, -1, 1),
-                              0, ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"]) );
-    players.push( new Player (Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI),
-                              Math.random()*2*Math.PI, 
-                              Vec.randomVector(-1, 1, -1, 1),
-                              1, ["a", "d", "s", "w"]) );
+    players.push( new Player (0, ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"]) );
+    players.push( new Player (1, ["a", "d", "s", "w"]) );
 
     dibujar(canvas);
 }
