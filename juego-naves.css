@@ -1,0 +1,16 @@
+html, body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-image: url('backgrounds/fondo-de-cielo.jpg');
+    /* background-image: url('cielo.png'); */
+    /* background-image: url('hubble.jpg'); */
+    /* background-repeat: no-repeat; */
+    /* background-attachment: fixed; */
+    background-size: cover;
+}
+
+#canvas {
+    /* background-color: chocolate; */
+}
