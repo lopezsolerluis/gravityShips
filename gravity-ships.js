@@ -69,6 +69,8 @@ class Mobile {
 }
 
 let colors = ['Red', 'cyan'];
+let KeysOfPlayers = [["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"],
+                     ["a", "d", "s", "w"]];
 
 class Player extends Mobile {
   constructor (shipNumber, playerKeys, pos, dir, vel) {
@@ -76,7 +78,7 @@ class Player extends Mobile {
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.shipNumber = shipNumber;
     this.score = 0;
-    this.keys = playerKeys;
+    this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
     this.shipOff = new Image();
     this.shipOn = new Image();
     this.shipOn.onload = () => this.radius = this.shipOn.height / 2;
@@ -89,10 +91,13 @@ class Player extends Mobile {
     this.canShoot = true;
 
     this.energy = 100;
+    this.explotionDuration = 40;
+    this.timeLeft = this.explotionDuration;
+    this.dead = false;
 
   }    
   updateVelocity (deltaT) {
-    if (allKeys[this.keys[2]]) {
+    if (allKeys[this.keys[2]] && !this.dead) {
       let dirVersor = new Vec( Math.cos(this.dir), Math.sin(this.dir));
       this.vel = this.vel.plus(dirVersor.times(.005*deltaT));
     }
@@ -102,12 +107,19 @@ class Player extends Mobile {
     this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
   }
   redraw (canvas) {
-    let ship = allKeys[this.keys[2]] ? this.shipOn : this.shipOff;
+    let ship = (allKeys[this.keys[2]] && !this.dead) ? this.shipOn : this.shipOff;
+    if (this.dead) {
+      canvas.save();
+      canvas.globalAlpha = this.timeLeft/this.explotionDuration;
+    } 
     drawImage(ship, this.pos, this.dir, canvas);
+    if (this.dead) {
+      canvas.restore();
+    }
   }
   move (deltaT) {
     super.move(deltaT);
-    this.updateDirection(deltaT);   
+    if (!this.dead) this.updateDirection(deltaT);   
   }
   shootMissile () {
     if (this.canShoot && allKeys[this.keys[3]]) {
@@ -118,6 +130,9 @@ class Player extends Mobile {
       this.canShoot = false;
       setTimeout( () => this.canShoot = true, this.shootingInterval);      
     }
+  }
+  explodes () {
+    this.dead = true;
   }
 }
 
@@ -174,8 +189,8 @@ function start() {
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
 
-    players.push( new Player (0, ["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"]) );
-    players.push( new Player (1, ["a", "d", "s", "w"]) );
+    players.push(new Player(0));
+    players.push(new Player(1));
 
     dibujar(canvas);
 }
@@ -188,15 +203,26 @@ function dibujar(canvas, time) {
     let deltaT = Math.min(time-lastTime, 100);
        // Players
     for (let player of players) {
-      let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
-      if (missile) {
-        missile.explodes();
-        players[missile.shipOwner].score++;
-        player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
+      if (!player.dead) {
+        let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
+        if (missile) {
+          missile.explodes();
+          players[missile.shipOwner].score++;
+          player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
+          player.explodes();
+        }
+        player.shootMissile();
+      } else {
+        if (player.timeLeft == 0) {
+          setTimeout ( () => players.push(new Player(player.shipNumber)), 1000 );
+          players = players.filter( p => p != player);
+          player == null;
+          continue;
+        }
+        player.timeLeft--;
       }
       player.move(deltaT);
-      player.redraw(canvas);    
-      player.shootMissile();
+      player.redraw(canvas);  
     }
     // Missiles
     for (let missile of missiles) {
