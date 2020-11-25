@@ -96,7 +96,7 @@ class Player extends Mobile {
     this.vel = this.vel.plus(this.accel.times(deltaT));
   }
   updateDirection (deltaT) {
-    this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .005 * deltaT;
+    this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
   }
   redraw (canvas) {
     let ship = allKeys[this.keys[2]] ? this.shipOn : this.shipOff;
