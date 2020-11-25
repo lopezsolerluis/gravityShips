@@ -183,6 +183,18 @@ function dibujar(canvas, time) {
     drawImage(sol, center, 0, canvas);
     
     let deltaT = Math.min(time-lastTime, 100);
+       // Players
+    for (let player of players) {
+      let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
+      if (missile) {
+        missile.explodes();
+        players[missile.shipOwner].score++;
+        player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
+      }
+      player.move(deltaT);
+      player.redraw(canvas);    
+      player.shootMissile();
+    }
     // Missiles
     for (let missile of missiles) {
       if (missile.tooCloseToSun() || missile.timeLeft == 0) {
@@ -196,19 +208,6 @@ function dibujar(canvas, time) {
       } 
       missile.move(deltaT);
       missile.redraw(canvas);
-    }
-    // Players
-    for (let player of players) {
-      let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
-      if (missile) {
-        missile.explodes();
-        players[missile.shipOwner].score++;
-        player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
-        console.log(players.map( p => p.score));
-      }
-      player.move(deltaT);
-      player.redraw(canvas);    
-      player.shootMissile();
     }        
   }
   lastTime = time;
