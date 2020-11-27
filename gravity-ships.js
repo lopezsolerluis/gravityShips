@@ -97,7 +97,7 @@ class Player extends Mobile {
     this.opacityIncrement = this.birthPulses / this.birthTime;
     this.opacity = 0;
 
-    this.fullFuel = 400;
+    this.fullFuel = 200;
     this.fuel = this.fullFuel;
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
@@ -130,11 +130,7 @@ class Player extends Mobile {
       this.birthTime--;
     }
     drawImage(ship, this.pos, this.dir, canvas);
-    // fuel bar
-    canvas.fillStyle = "lightgreen";
-    canvas.strokeStyle = "lightgreen";
-    canvas.fillRect(this.pos.x-ship.height/2, this.pos.y-ship.width/2, this.fuel / this.fullFuel * ship.height/2, 3);
-    canvas.strokeRect(this.pos.x-ship.height/2, this.pos.y-ship.width/2, ship.height/2, 3);
+    this.drawFuelBar(canvas, ship);
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
       drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
@@ -143,6 +139,14 @@ class Player extends Mobile {
     if (this.dead || this.birthTime >= -10) {
       canvas.restore();
     }
+  }
+  drawFuelBar (canvas, ship) {
+    canvas.fillStyle = "lightgreen";
+    canvas.strokeStyle = "lightgreen";
+    let xFuelBar = this.pos.x - ship.height/2;
+    let yFuelBar = this.pos.y - ship.width/2;
+    canvas.fillRect(xFuelBar, yFuelBar, this.fuel / this.fullFuel * ship.height/2, 3);
+    canvas.strokeRect(xFuelBar, yFuelBar, ship.height/2, 3);
   }
   move (deltaT) {
     super.move(deltaT);
