@@ -42,7 +42,7 @@ class Mobile {
   }
   acceleration () {
     let vectorToSun = center.minus(this.pos);
-    // if distance < 2, use 2 (¿Why? I don't know)
+    // if distance < 2, use distance=2 (¿Why? Because it painted me. :P)
     this.accel = vectorToSun.times( 10 / Math.pow (Math.max(vectorToSun.magnitude, 2), 3) );
   }
   updatePosition (deltaT) {
@@ -103,18 +103,21 @@ class Player extends Mobile {
     this.timeLeft = this.explotionDuration;
     this.dead = false;
   }    
+  updateFuel (deltaT) {
+    this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
+  }
   updateVelocity (deltaT) {
     if (allKeys[this.keys[2]] && !this.dead) {
       let dirVersor = new Vec( Math.cos(this.dir), Math.sin(this.dir));
       this.vel = this.vel.plus(dirVersor.times(.005*deltaT));
-      this.fuel--;
+      this.fuel = Math.max( 0, this.fuel - 1);
     }
     this.vel = this.vel.plus(this.accel.times(deltaT));
   }
   updateDirection (deltaT) {
     if (allKeys[this.keys[0]] || allKeys[this.keys[1]]) {
       this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
-      this.fuel -= .1;
+      this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
   }
   redraw (canvas) {
@@ -150,7 +153,10 @@ class Player extends Mobile {
   }
   move (deltaT) {
     super.move(deltaT);
-    if (!this.dead) this.updateDirection(deltaT);   
+    if (!this.dead) { 
+      this.updateDirection(deltaT);   
+      this.updateFuel(deltaT);
+    }
   }
   shootMissile () {
     if (this.canShoot && allKeys[this.keys[3]]) {
