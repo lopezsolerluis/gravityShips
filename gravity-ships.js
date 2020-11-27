@@ -97,7 +97,7 @@ class Player extends Mobile {
     this.opacityIncrement = this.birthPulses / this.birthTime;
     this.opacity = 0;
 
-    this.fullFuel = 10000;
+    this.fullFuel = 400;
     this.fuel = this.fullFuel;
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
@@ -107,11 +107,15 @@ class Player extends Mobile {
     if (allKeys[this.keys[2]] && !this.dead) {
       let dirVersor = new Vec( Math.cos(this.dir), Math.sin(this.dir));
       this.vel = this.vel.plus(dirVersor.times(.005*deltaT));
+      this.fuel--;
     }
     this.vel = this.vel.plus(this.accel.times(deltaT));
   }
   updateDirection (deltaT) {
-    this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
+    if (allKeys[this.keys[0]] || allKeys[this.keys[1]]) {
+      this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
+      this.fuel -= .1;
+    }
   }
   redraw (canvas) {
     let ship = (allKeys[this.keys[2]] && !this.dead) ? this.shipOn : this.shipOff;
@@ -128,7 +132,9 @@ class Player extends Mobile {
     drawImage(ship, this.pos, this.dir, canvas);
     // fuel bar
     canvas.fillStyle = "lightgreen";
+    canvas.strokeStyle = "lightgreen";
     canvas.fillRect(this.pos.x-ship.height/2, this.pos.y-ship.width/2, this.fuel / this.fullFuel * ship.height/2, 3);
+    canvas.strokeRect(this.pos.x-ship.height/2, this.pos.y-ship.width/2, ship.height/2, 3);
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
       drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
