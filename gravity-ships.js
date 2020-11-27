@@ -97,7 +97,8 @@ class Player extends Mobile {
     this.opacityIncrement = this.birthPulses / this.birthTime;
     this.opacity = 0;
 
-    this.energy = 100;
+    this.fullFuel = 10000;
+    this.fuel = this.fullFuel;
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
@@ -125,6 +126,9 @@ class Player extends Mobile {
       this.birthTime--;
     }
     drawImage(ship, this.pos, this.dir, canvas);
+    // fuel bar
+    canvas.fillStyle = "lightgreen";
+    canvas.fillRect(this.pos.x-ship.height/2, this.pos.y-ship.width/2, this.fuel / this.fullFuel * ship.height/2, 3);
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
       drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
