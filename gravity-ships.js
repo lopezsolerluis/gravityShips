@@ -109,18 +109,21 @@ class Player extends Mobile {
     }
     this.scoreElement = document.createElement("div");
     this.scoreElement.classList.add("score");
+    this.scoreElement.style.color = colors[shipNumber];
     scorePlayers[this.shipNumber].appendChild(this.scoreElement);
-    this.scoreFaceElement = document.createElement("span");
-    this.scoreFaceElement.classList.add("score__face");
-    this.scoreFaceElement.style.color = colors[shipNumber];
-    this.scoreElement.appendChild(this.scoreFaceElement);
+
     this.scoreFrontFaceElement = document.createElement("div");
-    this.scoreFrontFaceElement.classList.add("score__face--front");
-    this.scoreFaceElement.appendChild(this.scoreFrontFaceElement);
-    this.scoreBackFaceElement = document.createElement("div");
-    this.scoreBackFaceElement.classList.add("score__face--back");
-    this.scoreFaceElement.appendChild(this.scoreBackFaceElement);
+    this.scoreFrontFaceElement.classList.add("score__face", "score__face--front");
     this.scoreFrontFaceElement.textContent = this.score;
+    this.scoreElement.appendChild(this.scoreFrontFaceElement);
+    
+    this.scoreBackFaceElement = document.createElement("div");
+    this.scoreBackFaceElement.classList.add("score__face", "score__face--back");
+    this.scoreBackFaceElement.textContent = "10";
+    this.scoreElement.appendChild(this.scoreBackFaceElement);
+    
+    
+    
   }    
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
@@ -194,7 +197,7 @@ class Player extends Mobile {
     this.dead = true;
   }
   updateScore () {
-    this.scoreBackFaceElement.textContent = "Luis";
+    // this.scoreBackFaceElement.textContent = `${this.score}`;
     this.scoreElement.classList.toggle("is-flipped");
   }
 }
@@ -254,8 +257,8 @@ function start() {
     for (let i = 0; i < 2; i++) {
       let scoreContainer = document.createElement("span");
       scoreContainer.classList.add("scoreContainer");
-      scorePlayers.push(scoreContainer);
       document.body.appendChild(scoreContainer);
+      scorePlayers.push(scoreContainer);
       players.push(new Player(i));
     }
 

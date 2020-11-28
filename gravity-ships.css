@@ -15,13 +15,14 @@ html, body {
 }
 .scoreContainer {
     display: inline-block;
-    opacity: .3;
+    opacity: .5;
     perspective: 600px;
-    width: 10vw;
-    height: 20vh;
+    width: 20vw;
+    height: 40vh;
+    border: 1px solid #EEEEEE;
 }
 .score {
-    width: 100%;
+    width: 100%; 
     height: 100%;
     position: relative;
     transition: transform 1s;
@@ -30,19 +31,21 @@ html, body {
 .score__face {
     position: absolute;
     height: 100%;
-    width: 100%;
+    width: 100%; 
     text-align: center;
+    line-height: 260px;
     font-weight: bold;
     font-size: 20vh;
     -webkit-backface-visibility: hidden;
     backface-visibility: hidden;
   }
   .score__face--front {
-      /* background: red; */
-      /* color: greenyellow; */
+      background: red;
+      color: greenyellow;
   }  
   .score__face--back {
-    transform: rotateY( 180deg );
+      color: violet;
+    transform: rotateY(180deg);
   }
   .score.is-flipped {
     transform: rotateY(180deg);
