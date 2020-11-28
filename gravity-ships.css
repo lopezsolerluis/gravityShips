@@ -10,3 +10,40 @@ html, body {
     /* background-attachment: fixed; */
     background-size: cover;
 }
+.lienzo {
+    position: absolute;
+}
+.scoreContainer {
+    display: inline-block;
+    opacity: .3;
+    perspective: 600px;
+    width: 10vw;
+    height: 20vh;
+}
+.score {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: transform 1s;
+    transform-style: preserve-3d;
+}
+.score__face {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20vh;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .score__face--front {
+      /* background: red; */
+      /* color: greenyellow; */
+  }  
+  .score__face--back {
+    transform: rotateY( 180deg );
+  }
+  .score.is-flipped {
+    transform: rotateY(180deg);
+  }

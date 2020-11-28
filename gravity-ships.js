@@ -77,7 +77,6 @@ class Player extends Mobile {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.shipNumber = shipNumber;
-    this.score = 0;
     this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
     this.shipOff = new Image();
     this.shipOn = new Image();
@@ -97,11 +96,30 @@ class Player extends Mobile {
     this.opacityIncrement = this.birthPulses / this.birthTime;
     this.opacity = 0;
 
+    this.score = 0;
     this.fullFuel = 200;
     this.fuel = this.fullFuel;
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
+
+    this.scoreContainer = document.createElement("span");
+    this.scoreContainer.classList.add("scoreContainer");
+    this.scoreElement = document.createElement("div");
+    this.scoreElement.classList.add("score");
+    this.scoreContainer.appendChild(this.scoreElement);
+    this.scoreFaceElement = document.createElement("span");
+    this.scoreFaceElement.classList.add("score__face");
+    this.scoreFaceElement.style.color = colors[shipNumber];
+    this.scoreElement.appendChild(this.scoreFaceElement);
+    this.scoreFrontFaceElement = document.createElement("div");
+    this.scoreFrontFaceElement.classList.add("score__face--front");
+    this.scoreFaceElement.appendChild(this.scoreFrontFaceElement);
+    this.scoreBackFaceElement = document.createElement("div");
+    this.scoreBackFaceElement.classList.add("score__face--back");
+    this.scoreFaceElement.appendChild(this.scoreBackFaceElement);
+    document.body.appendChild(this.scoreContainer);
+    this.scoreFrontFaceElement.textContent = this.score;
   }    
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
@@ -173,6 +191,10 @@ class Player extends Mobile {
   }
   burns () {
     this.dead = true;
+  }
+  updateScore () {
+    this.scoreBackFaceElement.textContent = this.score;
+    this.scoreElement.classList.toggle("is-flipped");
   }
 }
 
@@ -251,7 +273,9 @@ function dibujar(canvas, time) {
         if (missile) {
           missile.explodes();
           players[missile.shipOwner].score++;
+          players[missile.shipOwner].updateScore();
           player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
+          player.updateScore();
           player.explodes();
         }
         player.shootMissile();
