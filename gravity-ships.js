@@ -70,6 +70,7 @@ class Mobile {
 let colors = ['Red', 'cyan'];
 let KeysOfPlayers = [["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"],
                      ["a", "d", "s", "w"]];
+let scorePlayers = [];
 const allKeys = {};
 
 class Player extends Mobile {
@@ -103,11 +104,12 @@ class Player extends Mobile {
     this.timeLeft = this.explotionDuration;
     this.dead = false;
 
-    this.scoreContainer = document.createElement("span");
-    this.scoreContainer.classList.add("scoreContainer");
+    if (scorePlayers[this.shipNumber].firstChild) {
+      scorePlayers[this.shipNumber].firstChild.remove();
+    }
     this.scoreElement = document.createElement("div");
     this.scoreElement.classList.add("score");
-    this.scoreContainer.appendChild(this.scoreElement);
+    scorePlayers[this.shipNumber].appendChild(this.scoreElement);
     this.scoreFaceElement = document.createElement("span");
     this.scoreFaceElement.classList.add("score__face");
     this.scoreFaceElement.style.color = colors[shipNumber];
@@ -118,7 +120,6 @@ class Player extends Mobile {
     this.scoreBackFaceElement = document.createElement("div");
     this.scoreBackFaceElement.classList.add("score__face--back");
     this.scoreFaceElement.appendChild(this.scoreBackFaceElement);
-    document.body.appendChild(this.scoreContainer);
     this.scoreFrontFaceElement.textContent = this.score;
   }    
   updateFuel (deltaT) {
@@ -193,7 +194,7 @@ class Player extends Mobile {
     this.dead = true;
   }
   updateScore () {
-    this.scoreBackFaceElement.textContent = this.score;
+    this.scoreBackFaceElement.textContent = "Luis";
     this.scoreElement.classList.toggle("is-flipped");
   }
 }
@@ -250,8 +251,13 @@ function start() {
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
 
-    players.push(new Player(0));
-    players.push(new Player(1));
+    for (let i = 0; i < 2; i++) {
+      let scoreContainer = document.createElement("span");
+      scoreContainer.classList.add("scoreContainer");
+      scorePlayers.push(scoreContainer);
+      document.body.appendChild(scoreContainer);
+      players.push(new Player(i));
+    }
 
     dibujar(canvas);
 }
