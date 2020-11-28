@@ -144,8 +144,9 @@ class Player extends Mobile {
     }
   }
   drawFuelBar (canvas, ship) {
-    canvas.fillStyle = "lightgreen";
+    canvas.fillStyle = "lightgreen";    
     canvas.strokeStyle = "lightgreen";
+    canvas.lineWidth = 1;
     let xFuelBar = this.pos.x - ship.height/2;
     let yFuelBar = this.pos.y - ship.width/2;
     canvas.fillRect(xFuelBar, yFuelBar, this.fuel / this.fullFuel * ship.height/2, 3);
