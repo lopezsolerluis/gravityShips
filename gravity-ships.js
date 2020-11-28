@@ -103,6 +103,16 @@ class Player extends Mobile {
     this.timeLeft = this.explotionDuration;
     this.dead = false;
   }    
+  reborn () {
+    this.pos = Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI);
+    this.vel = Vec.randomVector(-1, 1, -1, 1);
+    this.dir = Math.random()*2*Math.PI;
+    this.canShoot = true;
+    this.fuel = this.fullFuel;
+    this.timeLeft = this.explotionDuration;
+    this.dead = false;
+    this.birthTime = 100;
+  }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
   }
@@ -239,9 +249,8 @@ let lastTime = null;
 function dibujar(canvas, time) {
   if (lastTime) {
     canvas.clearRect(0,0,window.innerWidth,window.innerHeight);
-    
     let deltaT = Math.min(time-lastTime, 100);
-       // Players
+    // Players
     for (let player of players) {
       if (!player.dead) {
         if (player.tooCloseToSun()) {
@@ -254,13 +263,14 @@ function dibujar(canvas, time) {
           players[missile.shipOwner].score++;
           player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
           player.explodes();
+          continue;
         }
         player.shootMissile();
       } else {
         if (player.timeLeft == 0) {
-          setTimeout ( () => players.push(new Player(player.shipNumber)), 1000 );
-          players = players.filter( p => p != player);
-          player == null;
+          player.reborn();
+          // players = players.filter( p => p != player);
+          // player == null;
           continue;
         }
         player.timeLeft--;
