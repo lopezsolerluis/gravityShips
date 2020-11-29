@@ -193,8 +193,8 @@ class Missile extends Mobile {
     this.radius = 7;
     this.shipOwner = shipNumber;
     this.color = colors[shipNumber];
-    this.colorPhase = 0.1;
-    this.colorIncrement = .01;
+    this.radiusPlus = 1;
+    this.radiusIncrement = .05;
     this.explotionDuration = 40;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
@@ -205,14 +205,17 @@ class Missile extends Mobile {
       canvas.globalAlpha = this.timeLeft/this.explotionDuration;
     } 
     canvas.beginPath();
-    canvas.arc(this.pos.x, this.pos.y, this.radius, 0, 6.29, false);
-    canvas.fillStyle = this.color;
+    let radialGradient = canvas.createRadialGradient(this.pos.x, this.pos.y, 0, 
+                                                    this.pos.x, this.pos.y, this.radius * this.radiusPlus);
+    radialGradient.addColorStop(0, this.color);
+    radialGradient.addColorStop(.5/this.radiusPlus, this.color);
+    radialGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+    canvas.fillStyle = radialGradient;
+    canvas.arc(this.pos.x, this.pos.y, this.radius * this.radiusPlus, 0, 6.29, false);
     canvas.fill();
-    canvas.lineWidth = this.radius * 1.5;
-    canvas.strokeStyle = `rgba(255, 255, 255, ${this.colorPhase})`;
-    canvas.stroke();
-    this.colorPhase += this.colorIncrement;
-    if (this.colorPhase <= 0.1 || this.colorPhase >= 0.5) this.colorIncrement *= -1;
+   
+    this.radiusPlus += this.radiusIncrement;
+    if (this.radiusPlus <= 1 || this.radiusPlus >= 2) this.radiusIncrement *= -1;
     if (this.dead) {
       canvas.restore();
     }
@@ -269,8 +272,6 @@ function dibujar(canvas, time) {
       } else {
         if (player.timeLeft == 0) {
           player.reborn();
-          // players = players.filter( p => p != player);
-          // player == null;
           continue;
         }
         player.timeLeft--;
