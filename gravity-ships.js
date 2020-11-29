@@ -82,7 +82,7 @@ class Player extends Mobile {
     this.shipOff = new Image();
     this.shipOn = new Image();
     this.shipBurning = new Image();
-    this.shipOn.onload = () => this.radius = this.shipOn.height / 2;
+    this.shipOn.onload = () => this.radius = (this.shipOn.width + this.shipOn.height) / 4;
     this.shipOff.src = `ships/ship-${shipNumber}-off.png`;
     this.shipOn.src = `ships/ship-${shipNumber}-on.png`;
     this.shipBurning.src = `ships/ship-${shipNumber}-burning.png`;
@@ -156,7 +156,6 @@ class Player extends Mobile {
   drawFuelBar (canvas, ship) {
     canvas.fillStyle = "lightgreen";    
     canvas.strokeStyle = "lightgreen";
-    canvas.lineWidth = 1;
     let xFuelBar = this.pos.x - ship.height/2;
     let yFuelBar = this.pos.y - ship.width/2;
     canvas.fillRect(xFuelBar, yFuelBar, this.fuel / this.fullFuel * ship.height/2, 3);
@@ -171,7 +170,7 @@ class Player extends Mobile {
   }
   shootMissile () {
     if (this.canShoot && allKeys[this.keys[3]]) {
-      let missile = new Missile(this.pos.plus(Vec.fromPolar(this.shipOn.height/1.5,this.dir)), 
+      let missile = new Missile(this.pos.plus(Vec.fromPolar(this.shipOn.width/1.8,this.dir)), 
                                 this.vel.plus(Vec.fromPolar(2, this.dir)),
                                 this.shipNumber);
       missiles.push(missile);
@@ -212,8 +211,7 @@ class Missile extends Mobile {
     radialGradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
     canvas.fillStyle = radialGradient;
     canvas.arc(this.pos.x, this.pos.y, this.radius * this.radiusPlus, 0, 6.29, false);
-    canvas.fill();
-   
+    canvas.fill();   
     this.radiusPlus += this.radiusIncrement;
     if (this.radiusPlus <= 1 || this.radiusPlus >= 2) this.radiusIncrement *= -1;
     if (this.dead) {
