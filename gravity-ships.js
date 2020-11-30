@@ -232,6 +232,7 @@ let solRadius;
 sol.onload = () => solRadius = sol.height / 2 ;
 sol.src = "Sun-2.png";
 solBlink.src = "Sun-2-blink.png";
+let solBlinking = false;
 let center = new Vec(window.innerWidth/2, window.innerHeight/2);
 
 let missiles = [];
@@ -248,8 +249,6 @@ function start() {
 
     dibujar(canvas);
 }
-
-let solBlinking = 0;
 
 let lastTime = null;
 function dibujar(canvas, time) {
@@ -297,12 +296,10 @@ function dibujar(canvas, time) {
       missile.redraw(canvas);
     }
     
-    if (solBlinking) {
-      drawImage(solBlink, center, 0, canvas);  
-      solBlinking--;
-    } else {
-      drawImage(sol, center, 0, canvas);
-      if (Math.random() < .01) solBlinking = 20;
+    drawImage(solBlinking ? solBlink : sol, center, 0, canvas);  
+    if (!solBlinking && Math.random() < .01) {
+        solBlinking = true;
+        setTimeout( ()=> solBlinking = false, Math.random()*400 + 100);
     }
                 
   }
