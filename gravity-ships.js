@@ -34,6 +34,8 @@ class Vec {
     }
   }
 
+const gravityMassConstant = 100; // GM, in physical terms
+
 class Mobile {
   constructor (pos, vel) {
     this.pos = pos ?? Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI);
@@ -43,7 +45,7 @@ class Mobile {
   acceleration () {
     let vectorToSun = center.minus(this.pos);
     // if distance < 2, use distance=2 (¿Why? Because it painted me. :P)
-    this.accel = vectorToSun.times( 10 / Math.pow (Math.max(vectorToSun.magnitude, 2), 3) );
+    this.accel = vectorToSun.times( gravityMassConstant / Math.pow (Math.max(vectorToSun.magnitude, 2), 3) );
   }
   updatePosition (deltaT) {
     let newPos = this.pos.plus(this.vel.times(.1*deltaT));
@@ -52,7 +54,7 @@ class Mobile {
     this.pos = newPos;
   }
   updateVelocity (deltaT) {
-    this.vel = this.vel.plus(this.accel.times(deltaT));
+    this.vel = this.vel.plus(this.accel.times(.1*deltaT));
   }
   move (deltaT) {
     this.acceleration();
@@ -73,7 +75,7 @@ let KeysOfPlayers = [["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"],
 const allKeys = {};
 
 class Player extends Mobile {
-  constructor (shipNumber, playerKeys, pos, dir, vel) {
+  constructor (shipNumber, pos, dir, vel, playerKeys) {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.shipNumber = shipNumber;
@@ -117,12 +119,12 @@ class Player extends Mobile {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
   }
   updateVelocity (deltaT) {
+    super.updateVelocity(deltaT);
     if (allKeys[this.keys[2]] && !this.dead) {
       let dirVersor = new Vec( Math.cos(this.dir), Math.sin(this.dir));
       this.vel = this.vel.plus(dirVersor.times(.005*deltaT));
       this.fuel = Math.max( 0, this.fuel - 1);
     }
-    this.vel = this.vel.plus(this.accel.times(deltaT));
   }
   updateDirection (deltaT) {
     if (allKeys[this.keys[0]] || allKeys[this.keys[1]]) {
@@ -147,7 +149,7 @@ class Player extends Mobile {
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
       drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
-      this.dir+Math.random()*.02-.01, canvas);
+                this.dir+Math.random()*.02-.01, canvas);
     }
     if (this.dead || this.birthTime >= -10) {
       canvas.restore();
@@ -231,7 +233,6 @@ sol.onload = () => solRadius = sol.height / 2 ;
 sol.src = "Sun-2.png";
 solBlink.src = "Sun-2-blink.png";
 let center = new Vec(window.innerWidth/2, window.innerHeight/2);
-
 
 let missiles = [];
 let players = [];
