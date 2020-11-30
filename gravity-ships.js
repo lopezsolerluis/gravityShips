@@ -164,7 +164,9 @@ class Player extends Mobile {
     canvas.strokeRect(xFuelBar, yFuelBar, ship.height/2, 3);
   }
   move (deltaT) {
-    super.move(deltaT);
+    if (!this.birthTime) {
+      super.move(deltaT);
+    }
     if (!this.dead) { 
       this.updateDirection(deltaT);   
       this.updateFuel(deltaT);
