@@ -278,7 +278,9 @@ function dibujar(canvas, time) {
           player.explodes();
           playerCollision.explodes();
           player.score--;
-          playerCollision--;
+          playerCollision.score--;
+          player.vel = player.vel.plus(playerCollision.vel);
+          playerCollision.vel = playerCollision.vel.plus(player.vel);
           continue;
         }
         let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
