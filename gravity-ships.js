@@ -106,7 +106,7 @@ class Player extends Mobile {
     this.dead = false;
   }    
   reborn () {
-    this.pos = Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI);
+    this.pos = this.initialRandomPosition();
     this.vel = Vec.randomVector(-1, 1, -1, 1);
     this.dir = Math.random()*2*Math.PI;
     this.canShoot = true;
@@ -114,6 +114,14 @@ class Player extends Mobile {
     this.timeLeft = this.explotionDuration;
     this.dead = false;
     this.birthTime = 100;
+  }
+  initialRandomPosition () {
+    let newPos;
+    do {
+      newPos = Vec.randomVector(-canvas.width/2-this.radius,  canvas.width/2-this.radius,
+                                -canvas.height/2-this.radius, canvas.height/2-this.radius);
+    } while (newPos.distancia(center) <= solRadius);
+    return newPos.plus(center);
   }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
