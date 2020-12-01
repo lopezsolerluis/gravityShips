@@ -272,6 +272,14 @@ function dibujar(canvas, time) {
           player.burns();
           continue;
         }
+        let playerCollision = players.find (p => p != player && p.tooCloseTo(player));
+        if (playerCollision) {
+          player.explodes();
+          playerCollision.explodes();
+          player.score--;
+          playerCollision--;
+          continue;
+        }
         let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
         if (missile) {
           missile.explodes();
