@@ -141,7 +141,7 @@ class Player extends Mobile {
     }
   }
   redraw (canvas) {
-    let ship = (allKeys[this.keys[2]] && !this.dead) ? this.shipOn : this.shipOff;
+    let ship = (allKeys[this.keys[2]] && !this.dead && !this.birthTime) ? this.shipOn : this.shipOff;
     if (this.dead) {
       canvas.save();
       canvas.globalAlpha = this.timeLeft/this.explotionDuration;
@@ -175,7 +175,7 @@ class Player extends Mobile {
     if (!this.birthTime) {
       super.move(deltaT);
     }
-    if (!this.dead) { 
+    if (!this.dead && !this.birthTime) { 
       this.updateDirection(deltaT);   
       this.updateFuel(deltaT);
     }
