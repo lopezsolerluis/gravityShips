@@ -10,3 +10,24 @@ html, body {
     /* background-attachment: fixed; */
     background-size: cover;
 }
+.lienzo {
+    position: absolute;
+}
+.score {
+    display: inline-block;
+    position: relative;
+    width: 10vw;
+    height: 5vh;
+    font-size: 10vw;
+    font-weight: bold;
+    text-align: center;
+    padding-left: 30px;
+    opacity: .3;
+    transition: all .7s ease-in-out;
+}
+.zoom {
+    scale: 1.2;
+    opacity: .8;
+    text-shadow: 1px 1px 18px white, 1px -1px 18px white, 
+                -1px 1px 18px white,-1px -1px 18px white;
+}

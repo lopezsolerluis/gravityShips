@@ -104,6 +104,12 @@ class Player extends Mobile {
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
+
+    this.scoreDomElement = document.createElement("span");
+    this.scoreDomElement.classList.add("score");
+    this.scoreDomElement.style.color = colors[this.shipNumber];
+    this.scoreDomElement.textContent = this.score;
+    document.body.appendChild(this.scoreDomElement);
   }    
   reborn () {
     this.pos = this.initialRandomPosition();
@@ -140,6 +146,11 @@ class Player extends Mobile {
       this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
+  }
+  updateScore () {
+    this.scoreDomElement.textContent = this.score;
+    this.scoreDomElement.classList.add("zoom");
+    setTimeout( () => this.scoreDomElement.classList.remove("zoom"), 700);
   }
   redraw (canvas) {
     let ship = (allKeys[this.keys[2]] && !this.dead && !this.birthTime) ? this.shipOn : this.shipOff;
@@ -271,6 +282,8 @@ function dibujar(canvas, time) {
       if (!player.dead) {
         if (player.tooCloseToSun()) {
           player.burns();
+          player.score -= 2;
+          player.updateScore();
           continue;
         }
         let playerCollision = players.find (p => p != player && p.tooCloseTo(player));
@@ -281,6 +294,8 @@ function dibujar(canvas, time) {
           playerCollision.score--;
           player.vel = player.vel.plus(playerCollision.vel);
           playerCollision.vel = playerCollision.vel.plus(player.vel);
+          player.updateScore();
+          playerCollision.updateScore();
           continue;
         }
         let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
@@ -289,6 +304,8 @@ function dibujar(canvas, time) {
           players[missile.shipOwner].score++;
           player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
           player.explodes();
+          player.updateScore();
+          players[missile.shipOwner].updateScore();
           continue;
         }
         player.shootMissile();
