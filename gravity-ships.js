@@ -74,6 +74,8 @@ let KeysOfPlayers = [["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"],
                      ["a", "d", "s", "w"]];
 const allKeys = {};
 
+let allConfigurationDomElement;
+
 class Player extends Mobile {
   constructor (shipNumber, pos, dir, vel, playerKeys) {
     super(pos, vel);
@@ -110,6 +112,26 @@ class Player extends Mobile {
     this.scoreDomElement.style.color = colors[this.shipNumber];
     this.scoreDomElement.textContent = this.score;
     document.body.appendChild(this.scoreDomElement);
+
+    this.configDomElement = document.createElement("div");
+    this.titleConfig = document.createElement("div");
+    this.titleConfig.textContent = `Ship ${this.shipNumber+1}`;
+    this.titleConfig.style.background = colors[this.shipNumber];
+    this.configDomElement.appendChild(this.titleConfig);
+    // this.iconDiv = document.createElement("span");
+    // this.iconDiv.appendChild(this.shipOff);
+    this.configDomElement.appendChild(this.shipOff);
+    this.keysPanel = document.createElement("span");
+    this.configDomElement.appendChild(this.keysPanel);
+    this.keysButtons = [];
+    for (let i = 0; i < 4; i++) {
+      this.keysButtons[i] = document.createElement("button");
+      this.keysButtons[i].textContent = this.keys[i];
+      this.keysPanel.appendChild(this.keysButtons[i]);
+    }
+
+    allConfigurationDomElement.appendChild(this.configDomElement);
+    
   }    
   reborn () {
     this.pos = this.initialRandomPosition();
@@ -265,6 +287,8 @@ function start() {
     let canvas = canvasElement.getContext("2d");
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
+
+    allConfigurationDomElement = document.querySelector(".naves");
 
     players.push(new Player(0));
     players.push(new Player(1));

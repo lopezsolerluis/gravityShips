@@ -16,9 +16,7 @@ html, body {
 .score {
     display: inline-block;
     position: relative;
-    width: 10vw;
-    height: 5vh;
-    font-size: 10vw;
+    font-size: 5vw;
     font-weight: bold;
     text-align: center;
     padding-left: 30px;
@@ -33,15 +31,40 @@ html, body {
 }
 .triple {
     float: right;
-    font-size: larger;
+    font-size: 5vh;
+    padding: 5px;
  }
  .configuration {
      float: right;
      opacity: .4;
      background: silver;
-     /* width: 100px; */
+     max-width: 8vh;
+     max-height: 8vh;
+     transition: all .5s ease-in-out;
+     overflow: hidden;
  }
  .configuration:hover {
-     width: 100px;
-     height: 400px;
+     max-width: 30vw;
+     max-height: 100vh;
+     overflow-y: auto;
+     height: 100vh;
+ }
+ .naves {
+     clear: both;
+     max-height: 0;
+     width: 100%;
+ }
+ .naves div div {
+     width: 100%;
+     margin-bottom: 5px;
+ }
+ .naves img {
+     rotate: 0deg;
+     /* vertical-align: middle; */
+     float: left;
+     /* margin: 15px; */
+ }
+ .naves span {
+     margin-left: 20px;
+     background: darkseagreen;
  }
