@@ -338,8 +338,7 @@ function dibujar(canvas, time) {
     if (!solBlinking && Math.random() < .01) {
         solBlinking = true;
         setTimeout( ()=> solBlinking = false, Math.random()*400 + 100);
-    }
-                
+    }                
   }
   lastTime = time;
   requestAnimationFrame( time => dibujar(canvas, time) );    
