@@ -118,8 +118,8 @@ class Player extends Mobile {
   initialRandomPosition () {
     let newPos;
     do {
-      newPos = Vec.randomVector(-canvas.width/2-this.radius,  canvas.width/2-this.radius,
-                                -canvas.height/2-this.radius, canvas.height/2-this.radius);
+      newPos = Vec.randomVector(-canvas.width/2+this.radius,  canvas.width/2-this.radius,
+                                -canvas.height/2+this.radius, canvas.height/2-this.radius);
     } while (newPos.distancia(center) <= solRadius || 
              players.find( p => p.pos.minus(newPos) <= this.radius + p.radius));
     return newPos.plus(center);
