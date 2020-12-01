@@ -31,3 +31,17 @@ html, body {
     text-shadow: 1px 1px 18px white, 1px -1px 18px white, 
                 -1px 1px 18px white,-1px -1px 18px white;
 }
+.triple {
+    float: right;
+    font-size: larger;
+ }
+ .configuration {
+     float: right;
+     opacity: .4;
+     background: silver;
+     /* width: 100px; */
+ }
+ .configuration:hover {
+     width: 100px;
+     height: 400px;
+ }
