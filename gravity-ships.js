@@ -39,7 +39,7 @@ const gravityMassConstant = 100; // GM, in physical terms
 class Mobile {
   constructor (pos, vel) {
     this.pos = pos ?? Vec.randomPolarVector(center, 2*solRadius, window.innerWidth/2, 0, Math.PI);
-    this.vel = vel ?? Vec.randomVector(-1, 1, -1, 1);
+    this.vel = vel ?? new Vec(0, 0); // Vec.randomVector(-1, 1, -1, 1);
     this.accel;
   }
   acceleration () {
@@ -107,7 +107,7 @@ class Player extends Mobile {
   }    
   reborn () {
     this.pos = this.initialRandomPosition();
-    this.vel = Vec.randomVector(-1, 1, -1, 1);
+    this.vel = new Vec(0,0); // Vec.randomVector(-1, 1, -1, 1);
     this.dir = Math.random()*2*Math.PI;
     this.canShoot = true;
     this.fuel = this.fullFuel;
