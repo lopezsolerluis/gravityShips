@@ -76,6 +76,16 @@ const allKeys = {};
 
 let allConfigurationDomElement;
 
+function keyToString (key) {
+  switch (key) {
+    case "ArrowUp": return "↑";
+    case "ArrowDown": return "↓";
+    case "ArrowLeft": return "←";
+    case "ArrowRight": return "→";
+    default: return key;  
+  }
+}
+
 class Player extends Mobile {
   constructor (shipNumber, pos, dir, vel, playerKeys) {
     super(pos, vel);
@@ -127,10 +137,9 @@ class Player extends Mobile {
     for (let i = 0; i < 4; i++) {
       this.keysButtons[i] = document.createElement("button");
       this.keysButtons[i].style.gridArea = `area${i+1}`;
-      this.keysButtons[i].textContent = this.keys[i];
+      this.keysButtons[i].textContent = keyToString(this.keys[i]);
       this.keysPanel.appendChild(this.keysButtons[i]);
-    }
-    
+    }    
 
     allConfigurationDomElement.appendChild(this.configDomElement);
     
