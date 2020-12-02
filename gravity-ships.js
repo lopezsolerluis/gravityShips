@@ -74,7 +74,8 @@ let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"]];
 const allKeys = {};
 
-let allConfigurationDomElement;
+let allShipsElement;
+let allShipsContainer;
 
 function keyToString (key) {
   switch (key) {
@@ -123,16 +124,14 @@ class Player extends Mobile {
     this.scoreDomElement.textContent = this.score;
     document.body.appendChild(this.scoreDomElement);
 
-    this.configDomElement = document.createElement("div");
+    this.configShipElement = document.createElement("div");
     this.titleConfig = document.createElement("div");
     this.titleConfig.textContent = `Ship ${this.shipNumber+1}`;
     this.titleConfig.style.background = colors[this.shipNumber];
-    this.configDomElement.appendChild(this.titleConfig);
-    // this.iconDiv = document.createElement("span");
-    // this.iconDiv.appendChild(this.shipOff);
-    this.configDomElement.appendChild(this.shipOff);
+    this.configShipElement.appendChild(this.titleConfig);
+    this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
-    this.configDomElement.appendChild(this.keysPanel);
+    this.configShipElement.appendChild(this.keysPanel);
     this.keysButtons = [];
     for (let i = 0; i < 4; i++) {
       this.keysButtons[i] = document.createElement("button");
@@ -141,7 +140,7 @@ class Player extends Mobile {
       this.keysPanel.appendChild(this.keysButtons[i]);
     }    
 
-    allConfigurationDomElement.appendChild(this.configDomElement);
+    allShipsElement.appendChild(this.configShipElement);
     
   }    
   reborn () {
@@ -299,7 +298,8 @@ function start() {
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
 
-    allConfigurationDomElement = document.querySelector(".naves");
+    allShipsElement = document.querySelector(".naves");
+    allShipsContainer = document.querySelector(".navesContainer");
 
     players.push(new Player(0));
     players.push(new Player(1));
