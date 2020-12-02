@@ -58,7 +58,7 @@ html, body {
  .naves div div {
      /* width: 100%; */
      margin-bottom: 5px;
-     height: 30px;
+     /* height: 30px; */
      /* font-size: 200%; */
      font-weight: bold;
  }
@@ -75,12 +75,16 @@ html, body {
      grid-template-areas: 
      ". area1 ."
      "area2 area3 area4";
+     clear: both;
  }
  .naves div div button {
      float: right;
-     height: 30px;
      font-weight: bolder;
      padding: 0;
+ }
+ .naves div div:nth-child(1) button {
+     font-size: 30px;
+     margin: 10px;
  }
 #createShip {
     width: 80%;
