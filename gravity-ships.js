@@ -143,16 +143,7 @@ class Player extends Mobile {
       this.keysButtons[i].textContent = keyToString(this.keys[i]);
       this.keysButtons[i].addEventListener("click", () => {
         modal.style.display = "block";
-        paused = true;
         keyToChange = [this.shipNumber, i];
-        // event.stopPropagation();
-        // modal.addEventListener("keydown", event => {
-        //   console.log("Presionado");
-        //   this.keys[i] = event.key;
-        //   this.keysButtons[i].textContent = keyToString(event.key);
-        //   modal.removeEventListener("keydown");
-        //   modal.style.display = "none";
-        // })
       });
       this.keysPanel.appendChild(this.keysButtons[i]);
     }    
