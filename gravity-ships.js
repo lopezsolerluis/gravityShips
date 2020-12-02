@@ -140,6 +140,11 @@ class Player extends Mobile {
       this.keysButtons[i] = document.createElement("button");
       this.keysButtons[i].style.gridArea = `area${i+1}`;
       this.keysButtons[i].textContent = keyToString(this.keys[i]);
+      this.keysButtons[i].addEventListener("click", (event) => {
+        modal.style.display = "block";
+        paused = true;
+        event.stopPropagation();
+      });
       this.keysPanel.appendChild(this.keysButtons[i]);
     }    
 
@@ -297,17 +302,31 @@ let players = [];
 
 let paused = false;
 
+let modal;
+
 function start() {
     let canvasElement = document.getElementById("canvas");
     let canvas = canvasElement.getContext("2d");
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
 
+    modal = document.querySelector(".modal");
+    modal.addEventListener("click", e => {
+      if(e.target == modal){
+        modal.style.display = "none";
+        paused = false;
+      }
+    });
+
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
 
-    document.querySelector(".configuration").addEventListener("mouseenter", () => paused = true);
-    document.querySelector(".configuration").addEventListener("mouseleave", () => paused = false);
+    let configIcon = document.querySelector(".triple");
+    configIcon.style.cursor = "pointer";
+    configIcon.addEventListener("click", () => {
+      paused = !paused;
+      document.querySelector(".configuration").classList.toggle("configurationHover");
+    });
 
     players.push(new Player(0));
     players.push(new Player(1));
