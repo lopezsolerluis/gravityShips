@@ -44,18 +44,19 @@ html, body {
      overflow: hidden;
  }
  .configuration:hover {
-     max-width: 30vw;
+     max-width: 50vw;
      max-height: 100vh;
      overflow-y: auto;
      height: 100vh;
+     width: auto;
  }
  .naves {
      clear: both;
      max-height: 0;
-     width: 100%;
+     /* width: 100%; */
  }
  .naves div div {
-     width: 100%;
+     /* width: 100%; */
      margin-bottom: 5px;
  }
  .naves img {
@@ -65,6 +66,12 @@ html, body {
      /* margin: 15px; */
  }
  .naves span {
-     margin-left: 20px;
-     background: darkseagreen;
+     display: grid;
+     /* margin-left: 20px; */
+     /* grid-template-rows: 20px, 20px; */
+     /* grid-template-columns: 20px, 20px, 20px; */
+     grid-template-areas: 
+     ". area1 ."
+     "area2 area3 area4";
  }
+ 

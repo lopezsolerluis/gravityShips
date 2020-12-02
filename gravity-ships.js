@@ -70,8 +70,8 @@ class Mobile {
 }
 
 let colors = ['Red', 'cyan'];
-let KeysOfPlayers = [["ArrowLeft", "ArrowRight", "ArrowDown", "ArrowUp"],
-                     ["a", "d", "s", "w"]];
+let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
+                     ["w", "a", "s", "d"]];
 const allKeys = {};
 
 let allConfigurationDomElement;
@@ -126,9 +126,11 @@ class Player extends Mobile {
     this.keysButtons = [];
     for (let i = 0; i < 4; i++) {
       this.keysButtons[i] = document.createElement("button");
+      this.keysButtons[i].style.gridArea = `area${i+1}`;
       this.keysButtons[i].textContent = this.keys[i];
       this.keysPanel.appendChild(this.keysButtons[i]);
     }
+    
 
     allConfigurationDomElement.appendChild(this.configDomElement);
     
@@ -164,8 +166,8 @@ class Player extends Mobile {
     }
   }
   updateDirection (deltaT) {
-    if (allKeys[this.keys[0]] || allKeys[this.keys[1]]) {
-      this.dir += (allKeys[this.keys[1]] - allKeys[this.keys[0]]) * .003 * deltaT;
+    if (allKeys[this.keys[1]] || allKeys[this.keys[3]]) {
+      this.dir += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .003 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
   }
@@ -215,7 +217,7 @@ class Player extends Mobile {
     }
   }
   shootMissile () {
-    if (this.canShoot && allKeys[this.keys[3]]) {
+    if (this.canShoot && allKeys[this.keys[0]]) {
       let missile = new Missile(this.pos.plus(Vec.fromPolar(this.shipOn.width/1.8,this.dir)), 
                                 this.vel.plus(Vec.fromPolar(2, this.dir)),
                                 this.shipNumber);
