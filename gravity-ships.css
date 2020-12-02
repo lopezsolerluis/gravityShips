@@ -109,6 +109,7 @@ html, body {
     padding: 20px; 
     margin: auto; 
     width: 20vw;  
+    font-size: 200%;
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
@@ -122,3 +123,13 @@ html, body {
     from {top:-300px; opacity:0}
     to {top:0; opacity:1}
 }  
+.close-btn {
+    float: right; 
+    color: lightgray; 
+    font-size: 24px;  
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn:hover {
+    color: darkgray;
+}

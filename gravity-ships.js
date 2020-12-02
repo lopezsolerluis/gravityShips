@@ -316,6 +316,7 @@ function start() {
         modal.style.display = "none";
       }
     });
+    document.querySelector(".close-btn").addEventListener("click", () => modal.style.display = "none");
 
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
