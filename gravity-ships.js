@@ -126,8 +126,11 @@ class Player extends Mobile {
 
     this.configShipElement = document.createElement("div");
     this.titleConfig = document.createElement("div");
-    this.titleConfig.textContent = `Ship ${this.shipNumber+1}`;
+    this.titleConfig.textContent = `SHIP ${this.shipNumber+1}`;
     this.titleConfig.style.background = colors[this.shipNumber];
+    this.removeButton = document.createElement("button");
+    this.removeButton.textContent = "X";
+    this.titleConfig.appendChild(this.removeButton);
     this.configShipElement.appendChild(this.titleConfig);
     this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
