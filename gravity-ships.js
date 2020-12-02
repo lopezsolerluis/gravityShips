@@ -73,6 +73,7 @@ let colors = ['Red', 'cyan'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"]];
 const allKeys = {};
+let keyToChange;
 
 let allShipsElement;
 let allShipsContainer;
@@ -140,10 +141,18 @@ class Player extends Mobile {
       this.keysButtons[i] = document.createElement("button");
       this.keysButtons[i].style.gridArea = `area${i+1}`;
       this.keysButtons[i].textContent = keyToString(this.keys[i]);
-      this.keysButtons[i].addEventListener("click", (event) => {
+      this.keysButtons[i].addEventListener("click", () => {
         modal.style.display = "block";
         paused = true;
-        event.stopPropagation();
+        keyToChange = [this.shipNumber, i];
+        // event.stopPropagation();
+        // modal.addEventListener("keydown", event => {
+        //   console.log("Presionado");
+        //   this.keys[i] = event.key;
+        //   this.keysButtons[i].textContent = keyToString(event.key);
+        //   modal.removeEventListener("keydown");
+        //   modal.style.display = "none";
+        // })
       });
       this.keysPanel.appendChild(this.keysButtons[i]);
     }    
@@ -406,6 +415,13 @@ function dibujar(canvas, time) {
 }
 
 window.addEventListener("keydown", event => {
+  if (modal.style.display == "block") {
+    let [shipNumber, key] = keyToChange;
+    players[shipNumber].keys[key] = event.key;
+    players[shipNumber].keysButtons[key].textContent = keyToString(event.key);
+    modal.style.display = "none";
+    return;
+  }
   if (allKeys.hasOwnProperty(event.key)) {
     allKeys[event.key] = true;
     event.preventDefault();
