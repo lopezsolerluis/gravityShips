@@ -292,6 +292,8 @@ let center = new Vec(window.innerWidth/2, window.innerHeight/2);
 let missiles = [];
 let players = [];
 
+let paused = false;
+
 function start() {
     let canvasElement = document.getElementById("canvas");
     let canvas = canvasElement.getContext("2d");
@@ -301,6 +303,9 @@ function start() {
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
 
+    document.querySelector(".configuration").addEventListener("mouseenter", () => paused = true);
+    document.querySelector(".configuration").addEventListener("mouseleave", () => paused = false);
+
     players.push(new Player(0));
     players.push(new Player(1));
 
@@ -309,7 +314,7 @@ function start() {
 
 let lastTime = null;
 function dibujar(canvas, time) {
-  if (lastTime) {
+  if (!paused && lastTime) {
     canvas.clearRect(0,0,window.innerWidth,window.innerHeight);
     let deltaT = Math.min(time-lastTime, 100);
     // Players
