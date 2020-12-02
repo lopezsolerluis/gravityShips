@@ -69,7 +69,7 @@ class Mobile {
   }
 }
 
-let colors = ['Red', 'cyan'];
+let colors = ['lightCoral', 'cyan'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"]];
 const allKeys = {};
@@ -144,6 +144,7 @@ class Player extends Mobile {
       this.keysButtons[i].addEventListener("click", () => {
         modal.style.display = "block";
         keyToChange = [this.shipNumber, i];
+        document.querySelector(".modal-content").style.background = colors[this.shipNumber];
       });
       this.keysPanel.appendChild(this.keysButtons[i]);
     }    

@@ -105,7 +105,8 @@ html, body {
   }
 .modal-content {
     position: relative; 
-    background-color: white;
+    /* background-color: lightcoral; */
+    border-radius: 1rem;
     padding: 20px; 
     margin: auto; 
     width: 20vw;  
