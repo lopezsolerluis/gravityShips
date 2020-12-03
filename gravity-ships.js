@@ -332,7 +332,21 @@ function start() {
     players.push(new Player(0));
     players.push(new Player(1));
 
-    dibujar(canvas);
+    // dibujar(canvas);
+    let s0 = new Image();
+    let s1 = new Image();
+    s1.onload = () => {
+      
+      drawImage(s0, center, 0, canvas);
+      canvas.globalCompositeOperation = "source-atop";
+      canvas.fillStyle = "lightCoral";
+      canvas.fillRect(center.x-100, center.y-100, 200, 200);
+      canvas.globalCompositeOperation = "multiply";
+      drawImage(s1, center, 0, canvas);
+      canvas.globalCompositeOperation = "source-over";
+    };
+    s0.src = "ships/nave-sin-fondo-off.png";
+    s1.src = "ships/nave-sin-cuerpo-off.png";
 }
 
 let lastTime = null;
