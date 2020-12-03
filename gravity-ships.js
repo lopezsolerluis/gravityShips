@@ -149,7 +149,7 @@ class Player extends Mobile {
     this.removeButton.textContent = "🗑";
     this.titleConfig.appendChild(this.removeButton);
     this.configShipElement.appendChild(this.titleConfig);
-    // this.configShipElement.appendChild(this.shipOff);
+    this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
     this.configShipElement.appendChild(this.keysPanel);
     this.keysButtons = [];
@@ -356,24 +356,11 @@ function start() {
 
       dibujar(canvas);
     }
-    
-    // shipTransparentOn.onload = () => {
-    //   canvas.globalCompositeOperation = "source-over";
-    //   canvas.drawImage(shipNoBackgroundOn, 200, 200);
-    //   canvas.globalCompositeOperation = "source-atop";
-    //   canvas.fillStyle = "cyan";
-    //   canvas.fillRect(200, 200, shipNoBackgroundOn.width, shipNoBackgroundOn.height);
-    //   // canvas.globalCompositeOperation = "source-atop";
-    //   canvas.drawImage(shipTransparentOn, 200, 200);
-    //   canvas.globalCompositeOperation = "source-over";
-    //   }
-      
-    
+     
     shipNoBackgroundOff.src = "./ships/ship-no-background-off.png";
     shipNoBackgroundOn.src = "./ships/ship-no-background-on.png";
     shipTransparentOff.src = "./ships/ship-transparent-off.png";
     shipTransparentOn.src = "./ships/ship-transparent-on.png";
-    
     
   }
 
