@@ -225,8 +225,8 @@ class Player extends Mobile {
     this.drawFuelBar(canvas, ship);
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
-      // drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
-      //           this.dir+Math.random()*.02-.01, canvas);
+      drawImage(shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
+                this.dir+Math.random()*.02-.01, canvas);
     }
     if (this.dead || this.birthTime >= -10) {
       canvas.restore();
@@ -318,6 +318,7 @@ let shipNoBackgroundOff = new Image();
 let shipNoBackgroundOn = new Image();
 let shipTransparentOff = new Image();
 let shipTransparentOn = new Image();
+let shipBurning = new Image();
 
 let missiles = [];
 let players = [];
@@ -361,6 +362,7 @@ function start() {
     shipNoBackgroundOn.src = "./ships/ship-no-background-on.png";
     shipTransparentOff.src = "./ships/ship-transparent-off.png";
     shipTransparentOn.src = "./ships/ship-transparent-on.png";
+    shipBurning.src = "./ships/ship-burning.png";
     
   }
 
