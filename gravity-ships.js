@@ -88,6 +88,25 @@ function keyToString (key) {
   }
 }
 
+function createColorShips(color) {
+  function createColorShip(shipNoBackground, shipTransparent, color) {
+    let canvasAux = document.createElement('canvas');
+    canvasAux.width = shipNoBackground.width;
+    canvasAux.height = shipNoBackground.height;
+    let auxCtx = canvasAux.getContext('2d');  
+    auxCtx.globalCompositeOperation = "source-over";
+    auxCtx.drawImage(shipNoBackground, 0, 0);
+    auxCtx.globalCompositeOperation = "source-atop";
+    auxCtx.fillStyle = color;
+    auxCtx.fillRect(0, 0, canvasAux.width, canvasAux.height);
+    auxCtx.drawImage(shipTransparent, 0, 0);
+    auxCtx.globalCompositeOperation = "source-over";
+    return canvasAux;
+  }
+  return [createColorShip(shipNoBackgroundOff, shipTransparentOff, color),
+          createColorShip(shipNoBackgroundOn, shipTransparentOn, color)]
+}
+
 class Player extends Mobile {
   constructor (shipNumber, pos, dir, vel, playerKeys) {
     super(pos, vel);
@@ -95,14 +114,11 @@ class Player extends Mobile {
     this.shipNumber = shipNumber;
     this.score = 0;
     this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
-    this.shipOff = new Image();
-    this.shipOn = new Image();
-    this.shipBurning = new Image();
-    this.shipOn.onload = () => this.radius = (this.shipOn.width + this.shipOn.height) / 4;
-    this.shipOff.src = `ships/ship-${shipNumber}-off.png`;
-    this.shipOn.src = `ships/ship-${shipNumber}-on.png`;
-    this.shipBurning.src = `ships/ship-${shipNumber}-burning.png`;
-
+    this.color = colors[this.shipNumber];
+    // this.shipBurning = new Image();
+    [this.shipOff, this.shipOn] = createColorShips(this.color);
+    this.radius = (this.shipOn.width + this.shipOn.height) / 4;
+    
     for (let k of this.keys) allKeys[k] = false;
 
     this.shootingInterval = 1000;
@@ -128,12 +144,12 @@ class Player extends Mobile {
     this.configShipElement = document.createElement("div");
     this.titleConfig = document.createElement("div");
     this.titleConfig.textContent = `SHIP ${this.shipNumber+1}`;
-    this.titleConfig.style.background = colors[this.shipNumber];
+    this.titleConfig.style.background = this.color;
     this.removeButton = document.createElement("button");
     this.removeButton.textContent = "🗑";
     this.titleConfig.appendChild(this.removeButton);
     this.configShipElement.appendChild(this.titleConfig);
-    this.configShipElement.appendChild(this.shipOff);
+    // this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
     this.configShipElement.appendChild(this.keysPanel);
     this.keysButtons = [];
@@ -144,7 +160,7 @@ class Player extends Mobile {
       this.keysButtons[i].addEventListener("click", () => {
         modal.style.display = "block";
         keyToChange = [this.shipNumber, i];
-        document.querySelector(".modal-content").style.background = colors[this.shipNumber];
+        document.querySelector(".modal-content").style.background = this.color;
       });
       this.keysPanel.appendChild(this.keysButtons[i]);
     }    
@@ -209,8 +225,8 @@ class Player extends Mobile {
     this.drawFuelBar(canvas, ship);
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
-      drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
-                this.dir+Math.random()*.02-.01, canvas);
+      // drawImage(this.shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
+      //           this.dir+Math.random()*.02-.01, canvas);
     }
     if (this.dead || this.birthTime >= -10) {
       canvas.restore();
@@ -298,6 +314,11 @@ solBlink.src = "Sun-2-blink.png";
 let solBlinking = false;
 let center = new Vec(window.innerWidth/2, window.innerHeight/2);
 
+let shipNoBackgroundOff = new Image();
+let shipNoBackgroundOn = new Image();
+let shipTransparentOff = new Image();
+let shipTransparentOn = new Image();
+
 let missiles = [];
 let players = [];
 
@@ -328,26 +349,33 @@ function start() {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
     });
+    
+    shipTransparentOn.onload = () => {
+      players.push(new Player(0));
+      players.push(new Player(1));
 
-    players.push(new Player(0));
-    players.push(new Player(1));
-
-    // dibujar(canvas);
-    let s0 = new Image();
-    let s1 = new Image();
-    s1.onload = () => {
+      dibujar(canvas);
+    }
+    
+    // shipTransparentOn.onload = () => {
+    //   canvas.globalCompositeOperation = "source-over";
+    //   canvas.drawImage(shipNoBackgroundOn, 200, 200);
+    //   canvas.globalCompositeOperation = "source-atop";
+    //   canvas.fillStyle = "cyan";
+    //   canvas.fillRect(200, 200, shipNoBackgroundOn.width, shipNoBackgroundOn.height);
+    //   // canvas.globalCompositeOperation = "source-atop";
+    //   canvas.drawImage(shipTransparentOn, 200, 200);
+    //   canvas.globalCompositeOperation = "source-over";
+    //   }
       
-      drawImage(s0, center, 0, canvas);
-      canvas.globalCompositeOperation = "source-atop";
-      canvas.fillStyle = "lightCoral";
-      canvas.fillRect(center.x-100, center.y-100, 200, 200);
-      canvas.globalCompositeOperation = "multiply";
-      drawImage(s1, center, 0, canvas);
-      canvas.globalCompositeOperation = "source-over";
-    };
-    s0.src = "ships/nave-sin-fondo-off.png";
-    s1.src = "ships/nave-sin-cuerpo-off.png";
-}
+    
+    shipNoBackgroundOff.src = "./ships/ship-no-background-off.png";
+    shipNoBackgroundOn.src = "./ships/ship-no-background-on.png";
+    shipTransparentOff.src = "./ships/ship-transparent-off.png";
+    shipTransparentOn.src = "./ships/ship-transparent-on.png";
+    
+    
+  }
 
 let lastTime = null;
 function dibujar(canvas, time) {
