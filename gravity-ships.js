@@ -342,7 +342,7 @@ let missiles = [];
 let players = [];
 
 let paused = false;
-
+let pause;
 let modal;
 
 function start() {
@@ -362,11 +362,14 @@ function start() {
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
 
+    pause = document.querySelector(".pause");
     let configIcon = document.querySelector(".triple");
     configIcon.style.cursor = "pointer";
     configIcon.addEventListener("click", () => {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
+      pause.style.display = paused ? "block" : "none";
+      console.log(pause.style.display);
     });
     
     shipTransparentOn.onload = () => {
