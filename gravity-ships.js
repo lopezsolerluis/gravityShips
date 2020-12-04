@@ -321,12 +321,15 @@ class Missile extends Mobile {
 
 // Sol tomado de: https://gravityartanddesign.com/portfolio_page/call-the-sun/
 let sol = new Image();
-let solBlink = new Image();
+let solBlinkOne = new Image();
+let solBlinkTwo = new Image();
 let solRadius;
 sol.onload = () => solRadius = sol.height / 2 ;
-sol.src = "Sun-2.png";
-solBlink.src = "Sun-2-blink.png";
+sol.src = "sun/Sun.png";
+solBlinkOne.src = "sun/Sun-blink-1.png";
+solBlinkTwo.src = "sun/Sun-blink-2.png";
 let solBlinking = false;
+let solBlink;
 let center = new Vec(window.innerWidth/2, window.innerHeight/2);
 
 let shipNoBackgroundOff = new Image();
@@ -446,6 +449,7 @@ function dibujar(canvas, time) {
     drawImage(solBlinking ? solBlink : sol, center, 0, canvas);  
     if (!solBlinking && Math.random() < .01) {
         solBlinking = true;
+        solBlink = Math.random() < .5 ? solBlinkOne : solBlinkTwo;
         setTimeout( ()=> solBlinking = false, Math.random()*400 + 100);
     }                
   }
