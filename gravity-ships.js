@@ -156,6 +156,7 @@ class Player extends Mobile {
     this.colorButton.type = "color";
     this.colorButton.value = this.color;
     this.colorButton.style.gridArea = "color";
+    this.colorButton.addEventListener("input", event => this.updateColor(event.target.value));
     this.keysPanel.appendChild(this.colorButton);
     this.keysButtons = [];
     for (let i = 0; i < 4; i++) {
@@ -191,6 +192,12 @@ class Player extends Mobile {
     } while (newPos.distancia(center) <= solRadius || 
              players.find( p => p.pos.minus(newPos) <= this.radius + p.radius));
     return newPos.plus(center);
+  }
+  updateColor(color) {
+    this.color = color;
+    [this.shipOff, this.shipOn] = createColorShips(color);
+    colors[this.shipNumber] = color;
+    this.scoreDomElement.style.color = colors[this.shipNumber];
   }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
