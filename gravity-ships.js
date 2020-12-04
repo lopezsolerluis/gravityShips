@@ -113,17 +113,22 @@ function deleteShip(player) {
   document.body.removeChild(player.scoreDomElement);
   missiles = missiles.filter( m => m.shipOwner != player);
   players.splice(playerIndex,1);
+  numPlayers--;
 }
 
 let numPlayers = 0;
+let availableNumbers = [];
+for (let i = 0; i < maxPlayers; i++) {
+  availableNumbers.push(i);
+}
 
 class Player extends Mobile {
   constructor (pos, dir, vel, playerKeys) {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.score = 0;
-    this.keys = playerKeys ?? KeysOfPlayers[numPlayers];
-    this.color = colors[numPlayers];
+    this.keys = playerKeys ?? KeysOfPlayers[availableNumbers[0]];
+    this.color = colors[availableNumbers[0]];
     [this.shipOff, this.shipOn] = createColorShips(this.color);
     this.radius = (this.shipOn.width + this.shipOn.height) / 4;
     
@@ -179,6 +184,7 @@ class Player extends Mobile {
         
     allShipsElement.appendChild(this.configShipElement);
 
+    availableNumbers.shift();
     numPlayers++;    
   }    
   reborn () {
