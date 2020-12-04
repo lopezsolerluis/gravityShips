@@ -70,7 +70,6 @@ class Mobile {
 }
 
 let maxPlayers = 10;
-let availableShipNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let colors = ['#F08080', '#00FFFF'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"]];
@@ -107,25 +106,23 @@ function createColorShips(color) {
           createColorShip(shipNoBackgroundOn, shipTransparentOn, color)]
 }
 
-function deleteShip(shipNumber) {
-  let playerIndex = players.findIndex(p => p.shipNumber == shipNumber);
-  let player = players[playerIndex];
+function deleteShip(player) {
+  let playerIndex = players.findIndex(p => p == player);
   player.configShipElement.parentNode.removeChild(player.configShipElement);
   document.body.removeChild(player.scoreDomElement);
-  availableShipNumbers.push(shipNumber);
   missiles = missiles.filter( m => m.shipOwner != player);
   players.splice(playerIndex,1);
 }
 
+let numPlayers = 0;
+
 class Player extends Mobile {
-  constructor (shipNumber, pos, dir, vel, playerKeys) {
+  constructor (pos, dir, vel, playerKeys) {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
-    this.shipNumber = shipNumber;
-    availableShipNumbers.splice(availableShipNumbers.indexOf(this.shipNumber), 1);
     this.score = 0;
-    this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
-    this.color = colors[this.shipNumber];
+    this.keys = playerKeys ?? KeysOfPlayers[numPlayers];
+    this.color = colors[numPlayers];
     [this.shipOff, this.shipOn] = createColorShips(this.color);
     this.radius = (this.shipOn.width + this.shipOn.height) / 4;
     
@@ -147,15 +144,11 @@ class Player extends Mobile {
 
     this.scoreDomElement = document.createElement("span");
     this.scoreDomElement.classList.add("score");
-    this.scoreDomElement.style.color = colors[this.shipNumber];
+    this.scoreDomElement.style.color = this.color;
     this.scoreDomElement.textContent = this.score;
     document.body.appendChild(this.scoreDomElement);
 
     this.configShipElement = document.createElement("div");
-    // this.titleConfig = document.createElement("div");
-    // this.titleConfig.textContent = `SHIP ${this.shipNumber+1}`;
-    // this.titleConfig.style.background = this.color;
-    // this.configShipElement.appendChild(this.titleConfig);
     this.iconShip = this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
     this.configShipElement.appendChild(this.keysPanel);
@@ -172,7 +165,7 @@ class Player extends Mobile {
       this.keysButtons[i].textContent = keyToString(this.keys[i]);
       this.keysButtons[i].addEventListener("click", () => {
         modal.style.display = "block";
-        keyToChange = [this.shipNumber, i];
+        keyToChange = [this, i];
         document.querySelector(".modal-content").style.background = this.color;
       });
       this.keysPanel.appendChild(this.keysButtons[i]);
@@ -180,12 +173,12 @@ class Player extends Mobile {
     this.removeButton = document.createElement("button");
     this.removeButton.textContent = "🗑";
     this.removeButton.style.gridArea = "trash";
-    this.removeButton.addEventListener("click", () => deleteShip(this.shipNumber));
+    this.removeButton.addEventListener("click", () => deleteShip(this));
     this.keysPanel.appendChild(this.removeButton);
         
-
     allShipsElement.appendChild(this.configShipElement);
-    
+
+    numPlayers++;    
   }    
   reborn () {
     this.pos = this.initialRandomPosition();
@@ -209,8 +202,8 @@ class Player extends Mobile {
   updateColor(color) {
     this.color = color;
     [this.shipOff, this.shipOn] = createColorShips(color);
-    colors[this.shipNumber] = color;
-    this.scoreDomElement.style.color = colors[this.shipNumber];
+    // colors[this.shipNumber] = color;
+    this.scoreDomElement.style.color = color;
     this.configShipElement.replaceChild(this.shipOff, this.iconShip);
     this.iconShip = this.shipOff;
     missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });
@@ -385,9 +378,9 @@ function start() {
     });
     
     shipTransparentOn.onload = () => {
-      players.push(new Player(0));
-      players.push(new Player(1));
-
+      players.push(new Player());
+      players.push(new Player());
+      
       dibujar(canvas);
     }
     
@@ -411,7 +404,7 @@ function dibujar(canvas, time) {
       if (!player.dead) {
         if (player.tooCloseToSun()) {
           player.burns();
-          player.score -= 2;
+          player.score -= 1;
           player.updateScore();
           continue;
         }
@@ -476,9 +469,9 @@ function dibujar(canvas, time) {
 
 window.addEventListener("keydown", event => {
   if (modal.style.display == "block") {
-    let [shipNumber, key] = keyToChange;
-    players[shipNumber].keys[key] = event.key;
-    players[shipNumber].keysButtons[key].textContent = keyToString(event.key);
+    let [player, key] = keyToChange;
+    player.keys[key] = event.key;
+    player.keysButtons[key].textContent = keyToString(event.key);
     modal.style.display = "none";
     return;
   }
