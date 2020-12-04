@@ -209,7 +209,6 @@ class Player extends Mobile {
   updateColor(color) {
     this.color = color;
     [this.shipOff, this.shipOn] = createColorShips(color);
-    // colors[this.shipNumber] = color;
     this.scoreDomElement.style.color = color;
     this.configShipElement.replaceChild(this.shipOff, this.iconShip);
     this.iconShip = this.shipOff;
@@ -478,6 +477,7 @@ window.addEventListener("keydown", event => {
   if (modal.style.display == "block") {
     let [player, key] = keyToChange;
     player.keys[key] = event.key;
+    allKeys[event.key] = false;
     player.keysButtons[key].textContent = keyToString(event.key);
     modal.style.display = "none";
     return;
