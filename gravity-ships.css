@@ -57,7 +57,7 @@ html, body {
      clear: both;
      /* max-height: 0; */
  }
- .naves div div {
+ .naves div {
      /* width: 100%; */
      margin-bottom: 5px;
      /* margin-top: 0px; */
@@ -78,25 +78,28 @@ html, body {
      margin: 0px 20px 10px -10px;
      padding-left: 20px;
      grid-template-areas: 
-     "color area1 ."
-     "area2 area3 area4";
+     "color area1 . trash"
+     "area2 area3 area4 .";
      /* clear: both; */
  }
- .naves div div button {
+ .naves button {
      float: right;
      font-weight: bold;
+     /* font-size: 30px; */
      padding: 0;
  }
- .naves button {
+ .naves span button {
      font-weight: bold;
  }
  .naves input {
      height: 100%;
  }
- .naves div div:nth-child(1) button {
+ /* .naves div div button {
      font-size: 30px;
+     color: greenyellow;
      margin: 10px 10px 0 10px;
- }
+     clear: both;
+ } */
 #createShip {
     width: 80%;
     margin: 5px auto;

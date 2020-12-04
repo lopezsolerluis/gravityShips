@@ -69,6 +69,8 @@ class Mobile {
   }
 }
 
+let maxPlayers = 10;
+let availableShipNumbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 let colors = ['#F08080', '#00FFFF'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"]];
@@ -110,6 +112,8 @@ function deleteShip(shipNumber) {
   let player = players[playerIndex];
   player.configShipElement.parentNode.removeChild(player.configShipElement);
   document.body.removeChild(player.scoreDomElement);
+  availableShipNumbers.push(shipNumber);
+  missiles = missiles.filter( m => m.shipOwner != player);
   players.splice(playerIndex,1);
 }
 
@@ -118,6 +122,7 @@ class Player extends Mobile {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.shipNumber = shipNumber;
+    availableShipNumbers.splice(availableShipNumbers.indexOf(this.shipNumber), 1);
     this.score = 0;
     this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
     this.color = colors[this.shipNumber];
@@ -147,14 +152,10 @@ class Player extends Mobile {
     document.body.appendChild(this.scoreDomElement);
 
     this.configShipElement = document.createElement("div");
-    this.titleConfig = document.createElement("div");
-    this.titleConfig.textContent = `SHIP ${this.shipNumber+1}`;
-    this.titleConfig.style.background = this.color;
-    this.removeButton = document.createElement("button");
-    this.removeButton.textContent = "🗑";
-    this.removeButton.addEventListener("click", () => deleteShip(this.shipNumber));
-    this.titleConfig.appendChild(this.removeButton);
-    this.configShipElement.appendChild(this.titleConfig);
+    // this.titleConfig = document.createElement("div");
+    // this.titleConfig.textContent = `SHIP ${this.shipNumber+1}`;
+    // this.titleConfig.style.background = this.color;
+    // this.configShipElement.appendChild(this.titleConfig);
     this.iconShip = this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
     this.configShipElement.appendChild(this.keysPanel);
@@ -175,7 +176,13 @@ class Player extends Mobile {
         document.querySelector(".modal-content").style.background = this.color;
       });
       this.keysPanel.appendChild(this.keysButtons[i]);
-    }    
+    }
+    this.removeButton = document.createElement("button");
+    this.removeButton.textContent = "🗑";
+    this.removeButton.style.gridArea = "trash";
+    this.removeButton.addEventListener("click", () => deleteShip(this.shipNumber));
+    this.keysPanel.appendChild(this.removeButton);
+        
 
     allShipsElement.appendChild(this.configShipElement);
     
@@ -206,7 +213,7 @@ class Player extends Mobile {
     this.scoreDomElement.style.color = colors[this.shipNumber];
     this.configShipElement.replaceChild(this.shipOff, this.iconShip);
     this.iconShip = this.shipOff;
-    missiles.forEach( m => {if (m.shipOwner == this.shipNumber) {m.color = this.color} });
+    missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });
   }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
@@ -274,7 +281,7 @@ class Player extends Mobile {
     if (this.canShoot && allKeys[this.keys[0]]) {
       let missile = new Missile(this.pos.plus(Vec.fromPolar(this.shipOn.width/1.8,this.dir)), 
                                 this.vel.plus(Vec.fromPolar(2, this.dir)),
-                                this.shipNumber);
+                                this);
       missiles.push(missile);
       this.canShoot = false;
       setTimeout( () => this.canShoot = true, this.shootingInterval);      
@@ -289,11 +296,11 @@ class Player extends Mobile {
 }
 
 class Missile extends Mobile {
-  constructor(pos, vel, shipNumber) {
+  constructor(pos, vel, ship) {
     super(pos, vel);
     this.radius = 7;
-    this.shipOwner = shipNumber;
-    this.color = colors[shipNumber];
+    this.shipOwner = ship;
+    this.color = ship.color;
     this.radiusPlus = 1;
     this.radiusIncrement = .05;
     this.explotionDuration = 40;
@@ -423,11 +430,11 @@ function dibujar(canvas, time) {
         let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
         if (missile) {
           missile.explodes();
-          players[missile.shipOwner].score++;
-          player.score -= missile.shipOwner == player.shipNumber ? 2 : 1;
+          missile.shipOwner.score++;
+          player.score -= missile.shipOwner == player ? 2 : 1;
           player.explodes();
           player.updateScore();
-          players[missile.shipOwner].updateScore();
+          missile.shipOwner.updateScore();
           continue;
         }
         player.shootMissile();
