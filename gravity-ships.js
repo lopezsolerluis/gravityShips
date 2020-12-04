@@ -94,13 +94,11 @@ function createColorShips(color) {
     canvasAux.width = shipNoBackground.width;
     canvasAux.height = shipNoBackground.height;
     let auxCtx = canvasAux.getContext('2d');  
-    auxCtx.globalCompositeOperation = "source-over";
     auxCtx.drawImage(shipNoBackground, 0, 0);
     auxCtx.globalCompositeOperation = "source-atop";
     auxCtx.fillStyle = color;
     auxCtx.fillRect(0, 0, canvasAux.width, canvasAux.height);
     auxCtx.drawImage(shipTransparent, 0, 0);
-    auxCtx.globalCompositeOperation = "source-over";
     return canvasAux;
   }
   return [createColorShip(shipNoBackgroundOff, shipTransparentOff, color),
@@ -123,7 +121,6 @@ class Player extends Mobile {
     this.score = 0;
     this.keys = playerKeys ?? KeysOfPlayers[shipNumber];
     this.color = colors[this.shipNumber];
-    // this.shipBurning = new Image();
     [this.shipOff, this.shipOn] = createColorShips(this.color);
     this.radius = (this.shipOn.width + this.shipOn.height) / 4;
     
