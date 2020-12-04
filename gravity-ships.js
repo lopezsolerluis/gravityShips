@@ -107,6 +107,14 @@ function createColorShips(color) {
           createColorShip(shipNoBackgroundOn, shipTransparentOn, color)]
 }
 
+function deleteShip(shipNumber) {
+  let playerIndex = players.findIndex(p => p.shipNumber == shipNumber);
+  let player = players[playerIndex];
+  player.configShipElement.parentNode.removeChild(player.configShipElement);
+  document.body.removeChild(player.scoreDomElement);
+  players.splice(playerIndex,1);
+}
+
 class Player extends Mobile {
   constructor (shipNumber, pos, dir, vel, playerKeys) {
     super(pos, vel);
@@ -147,6 +155,7 @@ class Player extends Mobile {
     this.titleConfig.style.background = this.color;
     this.removeButton = document.createElement("button");
     this.removeButton.textContent = "🗑";
+    this.removeButton.addEventListener("click", () => deleteShip(this.shipNumber));
     this.titleConfig.appendChild(this.removeButton);
     this.configShipElement.appendChild(this.titleConfig);
     this.iconShip = this.configShipElement.appendChild(this.shipOff);
@@ -369,7 +378,6 @@ function start() {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
       pause.style.display = paused ? "block" : "none";
-      console.log(pause.style.display);
     });
     
     shipTransparentOn.onload = () => {
