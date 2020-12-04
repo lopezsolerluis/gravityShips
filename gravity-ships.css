@@ -32,7 +32,7 @@ html, body {
 }
 .triple {
     float: right;
-    font-size: 8vh;
+    font-size: 60px;
     padding: 0 8px;
     margin-top: -5px;
  }
@@ -40,8 +40,8 @@ html, body {
      float: right;
      opacity: .4;
      background: silver;
-     max-width: 8vh;
-     max-height: 9vh;
+     max-width: 60px;
+     max-height: 60px;
      transition: all .5s ease-in-out;
      overflow: hidden;
  }

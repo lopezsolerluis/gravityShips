@@ -375,12 +375,14 @@ function start() {
 
       dibujar(canvas);
     }
-     
-    shipNoBackgroundOff.src = "./ships/ship-no-background-off.png";
-    shipNoBackgroundOn.src = "./ships/ship-no-background-on.png";
-    shipTransparentOff.src = "./ships/ship-transparent-off.png";
-    shipTransparentOn.src = "./ships/ship-transparent-on.png";
-    shipBurning.src = "./ships/ship-burning.png";
+    
+    let dirSize = canvasElement.width <= 1600 ? 100 : 150;
+
+    shipNoBackgroundOff.src = `./ships/${dirSize}/ship-no-background-off.png`;
+    shipNoBackgroundOn.src = `./ships/${dirSize}/ship-no-background-on.png`;
+    shipTransparentOff.src = `./ships/${dirSize}/ship-transparent-off.png`;
+    shipTransparentOn.src = `./ships/${dirSize}/ship-transparent-on.png`;
+    shipBurning.src = `./ships/${dirSize}/ship-burning.png`;
     
   }
 
