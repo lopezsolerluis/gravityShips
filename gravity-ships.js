@@ -69,7 +69,7 @@ class Mobile {
   }
 }
 
-let colors = ['lightCoral', 'cyan'];
+let colors = ['#F08080', '#00FFFF'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"]];
 const allKeys = {};
@@ -152,6 +152,11 @@ class Player extends Mobile {
     this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
     this.configShipElement.appendChild(this.keysPanel);
+    this.colorButton = document.createElement("input");
+    this.colorButton.type = "color";
+    this.colorButton.value = this.color;
+    this.colorButton.style.gridArea = "color";
+    this.keysPanel.appendChild(this.colorButton);
     this.keysButtons = [];
     for (let i = 0; i < 4; i++) {
       this.keysButtons[i] = document.createElement("button");

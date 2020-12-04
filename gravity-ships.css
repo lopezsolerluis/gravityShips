@@ -58,11 +58,13 @@ html, body {
  .naves div div {
      /* width: 100%; */
      margin-bottom: 5px;
+     /* margin-top: 0px; */
      /* height: 30px; */
      /* font-size: 200%; */
      font-weight: bold;
+     clear: both;
  }
- .naves img {
+ .naves canvas {
      rotate: 0deg;
      /* vertical-align: middle; */
      float: left;
@@ -70,21 +72,28 @@ html, body {
  }
  .naves span {
      display: grid;
-     margin: 10px 20px 20px 20px;
+     float: inline-end;
+     margin: 0px 20px 10px -10px;
      padding-left: 20px;
      grid-template-areas: 
-     ". area1 ."
+     "color area1 ."
      "area2 area3 area4";
-     clear: both;
+     /* clear: both; */
  }
  .naves div div button {
      float: right;
-     font-weight: bolder;
+     font-weight: bold;
      padding: 0;
+ }
+ .naves button {
+     font-weight: bold;
+ }
+ .naves input {
+     height: 100%;
  }
  .naves div div:nth-child(1) button {
      font-size: 30px;
-     margin: 10px;
+     margin: 10px 10px 0 10px;
  }
 #createShip {
     width: 80%;
