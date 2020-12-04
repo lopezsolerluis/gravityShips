@@ -149,7 +149,7 @@ class Player extends Mobile {
     this.removeButton.textContent = "🗑";
     this.titleConfig.appendChild(this.removeButton);
     this.configShipElement.appendChild(this.titleConfig);
-    this.configShipElement.appendChild(this.shipOff);
+    this.iconShip = this.configShipElement.appendChild(this.shipOff);
     this.keysPanel = document.createElement("span");
     this.configShipElement.appendChild(this.keysPanel);
     this.colorButton = document.createElement("input");
@@ -198,6 +198,9 @@ class Player extends Mobile {
     [this.shipOff, this.shipOn] = createColorShips(color);
     colors[this.shipNumber] = color;
     this.scoreDomElement.style.color = colors[this.shipNumber];
+    this.configShipElement.replaceChild(this.shipOff, this.iconShip);
+    this.iconShip = this.shipOff;
+    missiles.forEach( m => {if (m.shipOwner == this.shipNumber) {m.color = this.color} });
   }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
