@@ -69,10 +69,11 @@ class Mobile {
   }
 }
 
-let maxPlayers = 10;
-let colors = ['#F08080', '#00FFFF'];
+let maxPlayers = 6;
+let colors = ['#FFBF00', '#40E0D0', '#DFFF00', '#6495ED', '#DE3163', '#CCCCFF'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
-                     ["w", "a", "s", "d"]];
+                     ["w", "a", "s", "d"], ['t', 'f', 'g', 'h'], ['i', 'j', 'k', 'l'],
+                     ['z', 'x', 'c', 'v'], ['b', 'n', 'm', ',']];
 const allKeys = {};
 let keyToChange;
 
