@@ -120,6 +120,7 @@ function deleteShip(player) {
   colorsUsed = colorsUsed.filter(c => c != player.color);
   players.splice(playerIndex,1);
   numPlayers--;
+  createShipButton.disabled = false;
 }
 
 let numPlayers = 0;
@@ -363,6 +364,8 @@ let paused = false;
 let pause;
 let modal;
 
+let createShipButton;
+
 function start() {
     let canvasElement = document.getElementById("canvas");
     let canvas = canvasElement.getContext("2d");
@@ -387,6 +390,14 @@ function start() {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
       pause.style.display = paused ? "block" : "none";
+    });
+
+    createShipButton = document.querySelector("#createShip");
+    createShipButton.addEventListener("click", () => {
+      players.push(new Player());
+      if (numPlayers == maxPlayers) {
+        createShipButton.disabled = true;
+      }
     });
     
     shipTransparentOn.onload = () => {
