@@ -77,6 +77,7 @@ html, body {
      /* float: inline-end; */
      margin: 0px 20px 20px -10px;
      padding-left: 20px;
+     grid-template-columns: 1fr 1fr 1fr 1fr;
      grid-template-areas: 
      "color area1 . trash"
      "area2 area3 area4 .";
