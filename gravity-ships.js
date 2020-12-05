@@ -76,6 +76,8 @@ let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ['z', 'x', 'c', 'v'], ['b', 'n', 'm', ',']];
 const allKeys = {};
 let keyToChange;
+let colorsUsed = [];
+let keysUsed = [];
 
 let allShipsElement;
 let allShipsContainer;
@@ -112,23 +114,27 @@ function deleteShip(player) {
   player.configShipElement.parentNode.removeChild(player.configShipElement);
   document.body.removeChild(player.scoreDomElement);
   missiles = missiles.filter( m => m.shipOwner != player);
+  KeysOfPlayers.push(player.keys);
+  colors.push(player.color);
+  keysUsed = keysUsed.filter(k => k != player.keys);
+  colorsUsed = colorsUsed.filter(c => c != player.color);
   players.splice(playerIndex,1);
   numPlayers--;
 }
 
 let numPlayers = 0;
-let availableNumbers = [];
-for (let i = 0; i < maxPlayers; i++) {
-  availableNumbers.push(i);
-}
 
 class Player extends Mobile {
   constructor (pos, dir, vel, playerKeys) {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.score = 0;
-    this.keys = playerKeys ?? KeysOfPlayers[availableNumbers[0]];
-    this.color = colors[availableNumbers[0]];
+    this.keys = playerKeys ?? KeysOfPlayers[0];
+    this.color = colors[0];
+    keysUsed.push(KeysOfPlayers[0]);
+    KeysOfPlayers.shift();
+    colorsUsed.push(colors[0]);
+    colors.shift();
     [this.shipOff, this.shipOn] = createColorShips(this.color);
     this.radius = (this.shipOn.width + this.shipOn.height) / 4;
     
@@ -184,7 +190,6 @@ class Player extends Mobile {
         
     allShipsElement.appendChild(this.configShipElement);
 
-    availableNumbers.shift();
     numPlayers++;    
   }    
   reborn () {
@@ -207,12 +212,13 @@ class Player extends Mobile {
     return newPos.plus(center);
   }
   updateColor(color) {
+    colorsUsed = colorsUsed.map(c => c == this.color ? color : c);
     this.color = color;
     [this.shipOff, this.shipOn] = createColorShips(color);
     this.scoreDomElement.style.color = color;
     this.configShipElement.replaceChild(this.shipOff, this.iconShip);
     this.iconShip = this.shipOff;
-    missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });
+    missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });    
   }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
