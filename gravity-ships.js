@@ -183,7 +183,11 @@ class Player extends Mobile {
     this.removeButton = document.createElement("button");
     this.removeButton.textContent = "🗑";
     this.removeButton.style.gridArea = "trash";
-    this.removeButton.addEventListener("click", () => deleteShip(this));
+    this.removeButton.addEventListener("click", () => {
+      confirmDelete.style.display = "block";
+      document.querySelector(".deleteContent").style.background = this.color;
+      deleteShip(this);
+    });
     this.keysPanel.appendChild(this.removeButton);
         
     allShipsElement.appendChild(this.configShipElement);
@@ -359,6 +363,7 @@ let players = [];
 let paused = false;
 let pause;
 let modal;
+let confirmDelete;
 
 let createShipButton;
 
@@ -375,6 +380,8 @@ function start() {
       }
     });
     document.querySelector(".close-btn").addEventListener("click", () => modal.style.display = "none");
+
+    confirmDelete = document.querySelector(".confirmDelete");
 
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
