@@ -69,7 +69,6 @@ class Mobile {
   }
 }
 
-let maxPlayers = 6;
 let colors = ['#FFBF00', '#40E0D0', '#DFFF00', '#6495ED', '#DE3163', '#CCCCFF'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"], ['t', 'f', 'g', 'h'], ['i', 'j', 'k', 'l'],
@@ -119,11 +118,8 @@ function deleteShip(player) {
   keysUsed = keysUsed.filter(k => k != player.keys);
   colorsUsed = colorsUsed.filter(c => c != player.color);
   players.splice(playerIndex,1);
-  numPlayers--;
   createShipButton.disabled = false;
 }
-
-let numPlayers = 0;
 
 class Player extends Mobile {
   constructor (pos, dir, vel, playerKeys) {
@@ -190,8 +186,7 @@ class Player extends Mobile {
     this.keysPanel.appendChild(this.removeButton);
         
     allShipsElement.appendChild(this.configShipElement);
-
-    numPlayers++;    
+  
   }    
   reborn () {
     this.pos = this.initialRandomPosition();
@@ -395,12 +390,12 @@ function start() {
     createShipButton = document.querySelector("#createShip");
     createShipButton.addEventListener("click", () => {
       players.push(new Player());
-      if (numPlayers == maxPlayers) {
+      if (colors.length == 0) {
         createShipButton.disabled = true;
       }
     });
     
-    shipTransparentOn.onload = () => {
+    shipBurning.onload = () => {
       players.push(new Player());
       players.push(new Player());
       
