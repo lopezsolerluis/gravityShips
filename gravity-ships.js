@@ -70,7 +70,7 @@ class Mobile {
 }
 
 // let colors = ['#FFBF00', '#40E0D0', '#DFFF00', '#6495ED', '#DE3163', '#CCCCFF'];
-let colors = ['#EE9D94', '#A1C9F1', '#F9F0C1', '#FFDCF4', '#C0ECCC', '#FFFFFF'];
+let colors = ['#FF756D', '#5DB1D1', '#FFF49C', '#B88BAD', '#90C978', '#FFFFFF'];
 let KeysOfPlayers = [["ArrowUp", "ArrowLeft", "ArrowDown", "ArrowRight"],
                      ["w", "a", "s", "d"], ['t', 'f', 'g', 'h'], ['i', 'j', 'k', 'l'],
                      ['z', 'x', 'c', 'v'], ['b', 'n', 'm', ',']];
