@@ -59,7 +59,7 @@ html, body {
  }
  .naves div {
      /* width: 100%; */
-     margin-bottom: 5px;
+     margin-bottom: 15px;
      /* margin-top: 0px; */
      /* height: 30px; */
      /* font-size: 200%; */
@@ -74,8 +74,8 @@ html, body {
  }
  .naves span {
      display: grid;
-     float: inline-end;
-     margin: 0px 20px 10px -10px;
+     /* float: inline-end; */
+     margin: 0px 20px 20px -10px;
      padding-left: 20px;
      grid-template-areas: 
      "color area1 . trash"
