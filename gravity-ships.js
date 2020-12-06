@@ -122,6 +122,7 @@ function deleteShip(player) {
   colorsUsed = colorsUsed.filter(c => c != player.color);
   players.splice(playerIndex,1);
   createShipButton.disabled = false;
+  createShipButton.style.cursor = "pointer";
 }
 
 class Player extends Mobile {
@@ -407,6 +408,7 @@ function start() {
       players.push(new Player());
       if (colors.length == 0) {
         createShipButton.disabled = true;
+        createShipButton.style.cursor = "not-allowed";
       }
     });
     

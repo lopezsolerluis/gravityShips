@@ -77,6 +77,7 @@ html, body {
      /* float: inline-end; */
      margin: 0px 20px 20px -10px;
      padding-left: 20px;
+     grid-gap: 3px;
      grid-template-columns: 1fr 1fr 1fr 1fr;
      grid-template-areas: 
      "color area1 . trash"
@@ -88,12 +89,25 @@ html, body {
      font-weight: bold;
      /* font-size: 30px; */
      padding: 0;
+     cursor: pointer;
+     box-shadow: 1px 1px 2px black;
+     /* transition-duration: 0.4s; */
+ }
+ .naves button:hover {
+     /* border: blue; */
+     /* background-color: white; */
+     box-shadow: 0px 0px 2px white, 1px 1px 2px black;
  }
  .naves span button {
      font-weight: bold;
  }
  .naves input {
      height: 100%;
+     cursor: pointer;
+     box-shadow: 1px 1px 2px black;
+ }
+ .naves input:hover {
+    box-shadow: 0px 0px 2px white, 1px 1px 2px black;
  }
  /* .naves div div button {
      font-size: 30px;
@@ -106,6 +120,11 @@ html, body {
     margin: 5px auto;
     display: block;
     font-weight: bold;
+    box-shadow: 1px 1px 2px black;
+    cursor: pointer;
+}
+#createShip:hover:enabled {
+    box-shadow: 0px 0px 2px white, 1px 1px 2px black;
 }
 .pause {
     display: none;
