@@ -79,6 +79,8 @@ let keyToChange;
 let colorsUsed = [];
 let keysUsed = [];
 
+let shipForDeletion;
+
 let allShipsElement;
 let allShipsContainer;
 
@@ -184,9 +186,9 @@ class Player extends Mobile {
     this.removeButton.textContent = "🗑";
     this.removeButton.style.gridArea = "trash";
     this.removeButton.addEventListener("click", () => {
+      shipForDeletion = this;
       confirmDelete.style.display = "block";
       document.querySelector(".deleteContent").style.background = this.color;
-      deleteShip(this);
     });
     this.keysPanel.appendChild(this.removeButton);
         
@@ -382,6 +384,11 @@ function start() {
     document.querySelector(".close-btn").addEventListener("click", () => modal.style.display = "none");
 
     confirmDelete = document.querySelector(".confirmDelete");
+    document.querySelector("#yes").addEventListener("click", () => {
+      deleteShip(shipForDeletion);
+      confirmDelete.style.display = "none";
+    });
+    document.querySelector("#no").addEventListener("click", () => confirmDelete.style.display = "none");
 
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
