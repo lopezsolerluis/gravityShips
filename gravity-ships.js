@@ -209,8 +209,8 @@ class Player extends Mobile {
     do {
       newPos = Vec.randomVector(-canvas.width/2+this.radius*2,  canvas.width/2-this.radius*2,
                                 -canvas.height/2+this.radius*2, canvas.height/2-this.radius*2);
-    } while (newPos.distancia(center) <= solRadius + this.radius*2 || 
-             players.find( p => p.pos.minus(newPos) <= (this.radius + p.radius)*2));
+    } while (newPos.distancia(center) <= solRadius + this.radius*3 || 
+             players.find( p => p.pos.minus(newPos) <= (this.radius + p.radius)*3));
     return newPos.plus(center);
   }
   updateColor(color) {
@@ -400,6 +400,7 @@ function start() {
     configIcon.addEventListener("click", () => {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
+      document.querySelector(".languaje").classList.toggle("show");
       pause.style.display = paused ? "block" : "none";
     });
 

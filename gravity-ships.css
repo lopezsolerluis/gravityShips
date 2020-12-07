@@ -224,3 +224,12 @@ html, body {
 #yes:hover {
     background: orangered;
 }
+.languaje {
+    float: left;
+    display: none;
+    margin: 10px;    
+    transition: all .5s ease-in-out;
+}
+.show {
+    display: block;
+}
