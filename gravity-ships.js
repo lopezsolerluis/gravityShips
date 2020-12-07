@@ -29,7 +29,7 @@ class Vec {
     get versor () {
       return new Vec(this.x, this.y).times(1.0/this.magnitude);
     }
-    distancia(other) {
+    distance(other) {
       return this.minus(other).magnitude;
     }
   }
@@ -62,10 +62,10 @@ class Mobile {
     this.updatePosition(deltaT);
   }
   tooCloseToSun () {
-    return this.pos.distancia(center) <= solRadius + this.radius;
+    return this.pos.distance(center) <= solRadius + this.radius;
   }
   tooCloseTo (other) {
-    return this.pos.distancia(other.pos) < this.radius + other.radius;
+    return this.pos.distance(other.pos) <= this.radius + other.radius;
   }
 }
 
@@ -207,11 +207,11 @@ class Player extends Mobile {
   initialRandomPosition () {
     let newPos;
     do {
-      newPos = Vec.randomVector(-canvas.width/2+this.radius*2,  canvas.width/2-this.radius*2,
-                                -canvas.height/2+this.radius*2, canvas.height/2-this.radius*2);
-    } while (newPos.distancia(center) <= solRadius + this.radius*3 || 
-             players.find( p => p.pos.minus(newPos) <= (this.radius + p.radius)*3));
-    return newPos.plus(center);
+      newPos = Vec.randomVector(this.radius*2, canvas.width - this.radius*2,
+                                this.radius*2, canvas.height - this.radius*2);
+    } while (newPos.distance(center) <= solRadius + this.radius*3 ||
+             players.find( p => newPos.distance(p.pos) <= (this.radius + p.radius)*3));
+    return newPos;
   }
   updateColor(color) {
     colorsUsed = colorsUsed.map(c => c == this.color ? color : c);
@@ -223,7 +223,7 @@ class Player extends Mobile {
     missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });    
   }
   updateFuel (deltaT) {
-    this.fuel = Math.min( this.fullFuel, this.fuel + 600/Math.pow(this.pos.distancia(center),2) * deltaT);
+    this.fuel = Math.min( this.fullFuel, this.fuel + 600/Math.pow(this.pos.distance(center),2) * deltaT);
   }
   updateVelocity (deltaT) {
     super.updateVelocity(deltaT);
