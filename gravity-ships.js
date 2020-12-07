@@ -456,22 +456,20 @@ function dibujar(canvas, time) {
         if (!player.birthTime) {
           let playerCollision = players.find (p => p != player && p.tooCloseTo(player));
           if (playerCollision) {
-            player.explodes();
-            playerCollision.explodes();
-            player.score--;
-            playerCollision.score--;
-            player.vel = player.vel.plus(playerCollision.vel);
-            playerCollision.vel = playerCollision.vel.plus(player.vel);
-            player.updateScore();
-            playerCollision.updateScore();
+            for (let pp of [player, playerCollision]) {
+              pp.explodes();
+              pp.score--;
+              pp.vel = player.vel.plus(playerCollision.vel);
+              pp.updateScore();
+            }
             continue;
           }        
           let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
           if (missile) {
             missile.explodes();
+            player.explodes();
             missile.shipOwner.score++;
             player.score -= missile.shipOwner == player ? 2 : 1;
-            player.explodes();
             player.updateScore();
             missile.shipOwner.updateScore();
             continue;
