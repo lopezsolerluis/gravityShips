@@ -151,6 +151,7 @@ class Player extends Mobile {
 
     this.fullFuel = 200;
     this.fuel = this.fullFuel;
+    this.fuelForMissile = 20;
     this.explotionDuration = 100;
     this.timeLeft = this.explotionDuration;
     this.dead = false;
@@ -209,10 +210,10 @@ class Player extends Mobile {
   initialRandomPosition () {
     let newPos;
     do {
-      newPos = Vec.randomVector(-canvas.width/2+this.radius,  canvas.width/2-this.radius,
-                                -canvas.height/2+this.radius, canvas.height/2-this.radius);
-    } while (newPos.distancia(center) <= solRadius || 
-             players.find( p => p.pos.minus(newPos) <= this.radius + p.radius));
+      newPos = Vec.randomVector(-canvas.width/2+this.radius*2,  canvas.width/2-this.radius*2,
+                                -canvas.height/2+this.radius*2, canvas.height/2-this.radius*2);
+    } while (newPos.distancia(center) <= solRadius + this.radius*2 || 
+             players.find( p => p.pos.minus(newPos) <= (this.radius + p.radius)*2));
     return newPos.plus(center);
   }
   updateColor(color) {
@@ -225,7 +226,8 @@ class Player extends Mobile {
     missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });    
   }
   updateFuel (deltaT) {
-    this.fuel = Math.min( this.fullFuel, this.fuel + 300/Math.pow(this.pos.distancia(center),2) * deltaT);
+    this.fuel = Math.min( this.fullFuel, this.fuel + 600/Math.pow(this.pos.distancia(center),2) * deltaT);
+    // console.log(this.fuel);
   }
   updateVelocity (deltaT) {
     super.updateVelocity(deltaT);
@@ -287,12 +289,13 @@ class Player extends Mobile {
     }
   }
   shootMissile () {
-    if (this.canShoot && allKeys[this.keys[0]]) {
+    if (this.canShoot && allKeys[this.keys[0]] && this.fuel >= this.fuelForMissile) {
       let missile = new Missile(this.pos.plus(Vec.fromPolar(this.shipOn.width/1.8,this.dir)), 
                                 this.vel.plus(Vec.fromPolar(2, this.dir)),
                                 this);
       missiles.push(missile);
       this.canShoot = false;
+      this.fuel -= this.fuelForMissile;
       setTimeout( () => this.canShoot = true, this.shootingInterval);      
     }
   }
