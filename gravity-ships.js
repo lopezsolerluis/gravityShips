@@ -34,7 +34,7 @@ class Vec {
     }
   }
 
-const gravityMassConstant = 100; // GM, in physical terms
+const gravityMassConstant = 100; // G*M, in physical terms
 
 class Mobile {
   constructor (pos, vel) {
@@ -44,8 +44,9 @@ class Mobile {
   }
   acceleration () {
     let vectorToSun = center.minus(this.pos);
-    // if distance < 2, use distance=2 (¿Why? Because it painted me. :P)
-    this.accel = vectorToSun.times( gravityMassConstant / Math.pow (Math.max(vectorToSun.magnitude, 2), 3) );
+    // if distance < solRadius/2, use that (¿Why? Because it painted me. :P)
+    this.accel = vectorToSun.times( gravityMassConstant / 
+                                    Math.pow (Math.max(vectorToSun.magnitude, solRadius/2), 3) );
   }
   updatePosition (deltaT) {
     let newPos = this.pos.plus(this.vel.times(.1*deltaT));
