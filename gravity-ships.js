@@ -370,11 +370,19 @@ let confirmDelete;
 
 let createShipButton;
 
+let languageSelector;
+
 function start() {
     let canvasElement = document.getElementById("canvas");
     let canvas = canvasElement.getContext("2d");
     canvasElement.width = window.innerWidth;
     canvasElement.height = window.innerHeight;
+
+    languageSelector = document.querySelector(".language");
+    languageSelector.addEventListener("change", event => changeLanguage(event.target.value));
+    let userLang = (navigator.language || navigator.userLanguage).substring(0,2);
+    languageSelector.value = userLang;
+    changeLanguage(userLang);    
 
     modal = document.querySelector(".modal");
     modal.addEventListener("click", e => {
@@ -400,7 +408,7 @@ function start() {
     configIcon.addEventListener("click", () => {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
-      document.querySelector(".languaje").classList.toggle("show");
+      languageSelector.classList.toggle("show");
       pause.style.display = paused ? "block" : "none";
     });
 
@@ -545,4 +553,26 @@ function drawImageWithScale(image, pos, scale, rotation, ctx) {
     ctx.rotate(rotation);
     ctx.drawImage(image, -image.width / 2, -image.height / 2);
     ctx.setTransform(1,0,0,1,0,0);
+} 
+
+function changeLanguage (language) {
+  switch (language) {
+    case "es":  // ESPAÑOL
+      document.querySelector("title").textContent = "Gravity Ships: El juego";
+      document.querySelector("#createShip").textContent = "AÑADIR NAVE";      
+      document.querySelector("#pressKey").textContent = "Pulsa una tecla...";
+      document.querySelector("#confirmShipDelete").innerHTML = "¿<em>Realmente</em> quieres borrar esta nave?";
+      document.querySelector("#yes").textContent = "¡Sí!";
+      document.querySelector("#no").textContent = "No...";
+      break;
+     case "en": // ENGLISH (DEFAULT)
+     default:
+      document.querySelector("title").textContent = "Gravity Ships: the game";
+      document.querySelector("#createShip").textContent = "ADD NEW SHIP";
+      document.querySelector("#pressKey").textContent = "Press any key...";
+      document.querySelector("#confirmShipDelete").innerHTML = "Do you <em>really</em> want to delete this ship?";
+      document.querySelector("#yes").textContent = "Yes!";
+      document.querySelector("#no").textContent = "No...";
+      break;
+  }
 } 

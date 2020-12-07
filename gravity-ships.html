@@ -15,9 +15,9 @@
     <div class="pause"><p>.</p></div>
     <aside>
         <div class="configuration">
-            <select class="languaje">
-                <option value="es">Español</option>
+            <select class="language">
                 <option value="en">English</option>
+                <option value="es">Español</option>
             </select>
             <div class="triple">☰</div> 
             <div class="navesContainer">
@@ -31,12 +31,12 @@
     <div class="modal">
         <div class="modal-content">
           <span class="close-btn">&times;</span>
-          <p>Press any key...</p>
+          <p id="pressKey">Press any key...</p>
         </div>
     </div>
     <div class="confirmDelete">
         <div class="deleteContent">
-          <p>Do you <em>really</em> want to delete this ship?</p>
+          <p id="confirmShipDelete">Do you <em>really</em> want to delete this ship?</p>
           <div>
             <span class="buttonConfirm" id="yes">Yes!</span>
             <span class="buttonConfirm" id="no">No...</span>
