@@ -126,14 +126,14 @@ function deleteShip(player) {
 }
 
 class Player extends Mobile {
-  constructor (pos, dir, vel, playerKeys) {
+  constructor (pos, vel, dir, playerKeys) {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
     this.score = 0;
     this.keys = playerKeys ?? KeysOfPlayers[0];
-    this.color = colors[0];
     keysUsed.push(KeysOfPlayers[0]);
     KeysOfPlayers.shift();
+    this.color = colors[0];
     colorsUsed.push(colors[0]);
     colors.shift();
     [this.shipOff, this.shipOn] = createColorShips(this.color);
@@ -142,20 +142,16 @@ class Player extends Mobile {
     for (let k of this.keys) allKeys[k] = false;
 
     this.shootingInterval = 1000;
-    this.canShoot = true;
-
+    
     this.birthTime = 100;
     this.birthPulses = 4;
     this.opacityIncrement = this.birthPulses / this.birthTime;
     this.opacity = 0;
 
     this.fullFuel = 200;
-    this.fuel = this.fullFuel;
     this.fuelForMissile = 20;
     this.explotionDuration = 100;
-    this.timeLeft = this.explotionDuration;
-    this.dead = false;
-
+    
     this.scoreDomElement = document.createElement("span");
     this.scoreDomElement.classList.add("score");
     this.scoreDomElement.style.color = this.color;
@@ -196,6 +192,7 @@ class Player extends Mobile {
         
     allShipsElement.appendChild(this.configShipElement);
   
+    this.reborn();
   }    
   reborn () {
     this.pos = this.initialRandomPosition();
@@ -227,7 +224,6 @@ class Player extends Mobile {
   }
   updateFuel (deltaT) {
     this.fuel = Math.min( this.fullFuel, this.fuel + 600/Math.pow(this.pos.distancia(center),2) * deltaT);
-    // console.log(this.fuel);
   }
   updateVelocity (deltaT) {
     super.updateVelocity(deltaT);
@@ -286,6 +282,7 @@ class Player extends Mobile {
     if (!this.dead && !this.birthTime) { 
       this.updateDirection(deltaT);   
       this.updateFuel(deltaT);
+      this.shootMissile();
     }
   }
   shootMissile () {
@@ -458,17 +455,18 @@ function dibujar(canvas, time) {
           playerCollision.updateScore();
           continue;
         }
-        let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
-        if (missile) {
-          missile.explodes();
-          missile.shipOwner.score++;
-          player.score -= missile.shipOwner == player ? 2 : 1;
-          player.explodes();
-          player.updateScore();
-          missile.shipOwner.updateScore();
-          continue;
+        if (!player.birthTime) {
+          let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
+          if (missile) {
+            missile.explodes();
+            missile.shipOwner.score++;
+            player.score -= missile.shipOwner == player ? 2 : 1;
+            player.explodes();
+            player.updateScore();
+            missile.shipOwner.updateScore();
+            continue;
+          }
         }
-        player.shootMissile();
       } else {
         if (player.timeLeft == 0) {
           player.reborn();
