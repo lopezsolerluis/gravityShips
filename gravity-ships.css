@@ -45,6 +45,9 @@ html, body {
      transition: all .5s ease-in-out;
      overflow: hidden;
  }
+ .configuration:hover {
+     opacity: .9;
+ }
  .configurationHover {
      max-width: 50vw;
      max-height: 100vh;
