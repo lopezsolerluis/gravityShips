@@ -443,19 +443,19 @@ function dibujar(canvas, time) {
           player.updateScore();
           continue;
         }
-        let playerCollision = players.find (p => p != player && p.tooCloseTo(player));
-        if (playerCollision) {
-          player.explodes();
-          playerCollision.explodes();
-          player.score--;
-          playerCollision.score--;
-          player.vel = player.vel.plus(playerCollision.vel);
-          playerCollision.vel = playerCollision.vel.plus(player.vel);
-          player.updateScore();
-          playerCollision.updateScore();
-          continue;
-        }
         if (!player.birthTime) {
+          let playerCollision = players.find (p => p != player && p.tooCloseTo(player));
+          if (playerCollision) {
+            player.explodes();
+            playerCollision.explodes();
+            player.score--;
+            playerCollision.score--;
+            player.vel = player.vel.plus(playerCollision.vel);
+            playerCollision.vel = playerCollision.vel.plus(player.vel);
+            player.updateScore();
+            playerCollision.updateScore();
+            continue;
+          }        
           let missile = missiles.find ( m => player.tooCloseTo(m) && !m.dead );
           if (missile) {
             missile.explodes();
