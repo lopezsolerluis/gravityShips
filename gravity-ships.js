@@ -258,7 +258,9 @@ class Player extends Mobile {
       this.birthTime--;
     }
     drawImage(ship, this.pos, this.dir, canvas);
-    this.drawFuelBar(canvas, ship);
+    if (!this.dead) {
+      this.drawFuelBar(canvas);
+    }
     if (this.dead) {
       canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
       drawImage(shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
@@ -268,13 +270,13 @@ class Player extends Mobile {
       canvas.restore();
     }
   }
-  drawFuelBar (canvas, ship) {
+  drawFuelBar (canvas) {
     canvas.fillStyle = "lightgreen";    
     canvas.strokeStyle = "lightgreen";
-    let xFuelBar = this.pos.x - ship.height/2;
-    let yFuelBar = this.pos.y - ship.width/2;
-    canvas.fillRect(xFuelBar, yFuelBar, this.fuel / this.fullFuel * ship.height/2, 3);
-    canvas.strokeRect(xFuelBar, yFuelBar, ship.height/2, 3);
+    let xFuelBar = this.pos.x - this.radius*1.2;
+    let yFuelBar = this.pos.y - this.radius*1.2;
+    canvas.fillRect(xFuelBar, yFuelBar, this.fuel / this.fullFuel * this.radius, 3);
+    canvas.strokeRect(xFuelBar, yFuelBar, this.radius, 3);
   }
   move (deltaT) {
     if (!this.birthTime) {
