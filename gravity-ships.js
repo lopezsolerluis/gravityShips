@@ -262,13 +262,22 @@ class Player extends Mobile {
       this.drawFuelBar(canvas);
     }
     if (this.dead) {
-      canvas.globalAlpha = 1 - this.timeLeft/this.explotionDuration;
-      drawImage(shipBurning, this.pos.plus(Vec.randomVector(-5,5,-5,5)), 
+      canvas.globalAlpha = this.computeLinearOpacity(0, .5, .9);
+      drawImage(shipBurning0, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
                 this.dir+Math.random()*.02-.01, canvas);
+      canvas.globalAlpha = this.computeLinearOpacity(.4, .75, 1);
+      drawImage(shipBurning1, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
+                this.dir+Math.random()*.02-.01, canvas);                
     }
     if (this.dead || this.birthTime >= -10) {
       canvas.restore();
     }
+  }
+  computeLinearOpacity (xBegin, xMax, xEnd) {
+    let x = 1 - this.timeLeft / this.explotionDuration;
+    if (x <= xBegin || x >= xEnd) return 0;
+    if (x > xBegin && x <= xMax) return (x - xBegin) / (xMax - xBegin);
+    if (x > xMax) return (xEnd - x) / (xEnd - xMax);
   }
   drawFuelBar (canvas) {
     canvas.fillStyle = "lightgreen";    
@@ -361,7 +370,8 @@ let shipNoBackgroundOff = new Image();
 let shipNoBackgroundOn = new Image();
 let shipTransparentOff = new Image();
 let shipTransparentOn = new Image();
-let shipBurning = new Image();
+let shipBurning0 = new Image();
+let shipBurning1 = new Image();
 
 let missiles = [];
 let players = [];
@@ -424,7 +434,7 @@ function start() {
       }
     });
     
-    shipBurning.onload = () => {
+    shipBurning1.onload = () => {
       players.push(new Player());
       players.push(new Player());
       
@@ -437,7 +447,8 @@ function start() {
     shipNoBackgroundOn.src = `./ships/${dirSize}/ship-no-background-on.png`;
     shipTransparentOff.src = `./ships/${dirSize}/ship-transparent-off.png`;
     shipTransparentOn.src = `./ships/${dirSize}/ship-transparent-on.png`;
-    shipBurning.src = `./ships/${dirSize}/ship-burning.png`;
+    shipBurning0.src = `./ships/${dirSize}/ship-burning-0.png`;
+    shipBurning1.src = `./ships/${dirSize}/ship-burning-1.png`;
     
   }
 
