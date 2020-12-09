@@ -130,6 +130,7 @@ class Player extends Mobile {
   constructor (pos, vel, dir, playerKeys) {
     super(pos, vel);
     this.dir = dir ?? Math.random()*2*Math.PI;
+    this.angularVelocity = 0;
     this.score = 0;
     this.keys = playerKeys ?? KeysOfPlayers[0];
     keysUsed.push(KeysOfPlayers[0]);
@@ -198,6 +199,7 @@ class Player extends Mobile {
   reborn () {
     this.pos = this.initialRandomPosition();
     this.vel = new Vec(0,0); // Vec.randomVector(-1, 1, -1, 1);
+    this.angularVelocity = 0;
     this.dir = Math.random()*2*Math.PI;
     this.canShoot = true;
     this.fuel = this.fullFuel;
@@ -235,8 +237,9 @@ class Player extends Mobile {
     }
   }
   updateDirection (deltaT) {
+    this.dir += this.angularVelocity * deltaT;
     if (allKeys[this.keys[1]] || allKeys[this.keys[3]]) {
-      this.dir += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .003 * deltaT;
+      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .000005 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
   }
