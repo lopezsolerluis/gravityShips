@@ -169,13 +169,7 @@ class Player extends Mobile {
     this.colorButton.value = this.color;
     this.colorButton.style.gridArea = "color";
     this.colorButton.addEventListener("input", event => this.updateColor(event.target.value));
-    this.colorButtonToolTip = document.createElement("div");
-    this.colorButtonToolTip.classList.add("colorTooltip");
-    this.colorButtonDiv = document.createElement("div");
-    this.colorButtonDiv.classList.add("tooltip");
-    this.colorButtonDiv.appendChild(this.colorButton);
-    this.colorButtonDiv.appendChild(this.colorButtonToolTip);
-    this.keysPanel.appendChild(this.colorButtonDiv);
+    this.keysPanel.appendChild(this.colorButton);
     this.keysButtons = [];
     for (let i = 0; i < 4; i++) {
       this.keysButtons[i] = document.createElement("button");
@@ -585,7 +579,6 @@ function changeLanguage (language) {
       document.querySelector("#confirmShipDelete").innerHTML = "¿<em>Realmente</em> quieres borrar esta nave?";
       document.querySelector("#yes").textContent = "¡Sí!";
       document.querySelector("#no").textContent = "No...";
-      document.querySelectorAll(".colorTooltip").forEach(e => e.innerHTML = "<p>Pulsa para cambiar el color de la nave.</p>");
       break;
      case "en": // ENGLISH (DEFAULT)
      default:
@@ -595,7 +588,6 @@ function changeLanguage (language) {
       document.querySelector("#confirmShipDelete").innerHTML = "Do you <em>really</em> want to delete this ship?";
       document.querySelector("#yes").textContent = "Yes!";
       document.querySelector("#no").textContent = "No...";
-      document.querySelectorAll(".colorTooltip").forEach(e => e.innerHTML = "<p>Press to change ship's color.</p>");
       break;
   }
 } 
