@@ -93,11 +93,6 @@ html, body {
  .naves span button {
      font-weight: bold;
  }
- /* .naves input {
-     height: 100%;
-     cursor: pointer;
-     box-shadow: 1px 1px 2px black;
- } */
  .naves input:hover {
     box-shadow: 0px 0px 2px white, 1px 1px 2px black;
  }
@@ -123,7 +118,7 @@ html, body {
     background-color: rgb(0, 0, 0);
     background-color: rgba(0, 0, 0, 0.5);
   } 
-.modal {
+.modal, .helpModal, .confirmDelete {
     display: none;
     position: fixed; 
     padding-top: 50px;
@@ -132,7 +127,7 @@ html, body {
     width: 100%;
     height: 100%; 
 }
-.modal-content {
+.modal-content, .deleteContent {
     position: relative; 
     border-radius: 1rem;
     padding: 20px; 
@@ -161,27 +156,6 @@ html, body {
 }
 .close-btn:hover {
     color: darkgray;
-}
-.confirmDelete {
-    display: none;
-    position: fixed; 
-    padding-top: 50px;
-    left: 0; 
-    top: 0;
-    width: 100%;
-    height: 100%; 
-}
-  .deleteContent {
-    position: relative; 
-    border-radius: 1rem;
-    padding: 20px; 
-    margin: auto; 
-    width: 20vw;  
-    font-size: 200%;
-    -webkit-animation-name: animatetop;
-    -webkit-animation-duration: 0.4s;
-    animation-name: animatetop;
-    animation-duration: 0.4s
 }
 .deleteContent div {
     text-align: center;
@@ -230,15 +204,6 @@ html, body {
 .show {
     display: block;
 }
-.helpModal {
-    display: none;
-    position: fixed; 
-    padding-top: 50px;
-    left: 0; 
-    top: 0;
-    width: 100%;
-    height: 100%; 
-}
   .helpContent {
     position: relative; 
     border-radius: 1rem;
@@ -284,20 +249,11 @@ html, body {
     margin-bottom: 20px;
 }
 #controlHelp button , #controlHelp input {
-    /* float: right; */
     font-weight: bold;
     padding: 0;
     cursor: pointer;
     box-shadow: 1px 1px 2px black;
     height: 100%;
-    /* width: auto; */
-    /* pointer-events: none; */
-    cursor: default;
-}
-/* #controlHelp input {
-    height: 100%;
-    cursor: pointer;
-    box-shadow: 1px 1px 2px black;
     pointer-events: none;
     cursor: default;
-} */
+}
