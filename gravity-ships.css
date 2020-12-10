@@ -77,7 +77,7 @@ html, body {
      "color area1 . trash"
      "area2 area3 area4 .";
  }
- .naves button {
+ .naves button, .naves input {
      float: right;
      font-weight: bold;
      padding: 0;
@@ -93,11 +93,11 @@ html, body {
  .naves span button {
      font-weight: bold;
  }
- .naves input {
+ /* .naves input {
      height: 100%;
      cursor: pointer;
      box-shadow: 1px 1px 2px black;
- }
+ } */
  .naves input:hover {
     box-shadow: 0px 0px 2px white, 1px 1px 2px black;
  }
@@ -245,13 +245,13 @@ html, body {
     padding: 20px; 
     margin: auto; 
     width: 40vw;  
-    font-size: 200%;
+    font-size: 150%;
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
     animation-duration: 0.4s;
-    background: lightblue;
-    color: indigo;
+    background: indigo;
+    color: lightblue;
 }
 .close-btn-help {
     float: right; 
@@ -265,6 +265,7 @@ html, body {
 }
 #shipHelpCanvas {
     float: left;
+    
 } 
 #controlHelp {
     float: left;
@@ -278,21 +279,24 @@ html, body {
     "area2 area3 area4 .";   
     width: auto;
 }
-#controlHelp button {
-    float: right;
+#controlHelp li {
+    clear: both;
+}
+#controlHelp button , #controlHelp input {
+    /* float: right; */
     font-weight: bold;
     padding: 0;
     cursor: pointer;
     box-shadow: 1px 1px 2px black;
     height: 100%;
-    width: auto;
-    pointer-events: none;
+    /* width: auto; */
+    /* pointer-events: none; */
     cursor: default;
 }
-#controlHelp input {
+/* #controlHelp input {
     height: 100%;
     cursor: pointer;
     box-shadow: 1px 1px 2px black;
     pointer-events: none;
     cursor: default;
-}
+} */

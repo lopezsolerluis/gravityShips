@@ -388,6 +388,8 @@ let createShipButton;
 
 let languageSelector, helpIcon;
 
+let helpShip, helpShipCanvas;
+
 function start() {
     let canvasElement = document.getElementById("canvas");
     let canvas = canvasElement.getContext("2d");
@@ -452,6 +454,18 @@ function start() {
       languageSelector.value = userLang;
       changeLanguage(userLang);    
   
+      helpShip = createColorShips("#FF756D");
+      helpShipCanvas = document.querySelector("#shipHelpCanvas");
+      helpShipCanvas.width = helpShip[0].width+20;
+      helpShipCanvas.height = helpShip[0].height+20;
+      helpShipCanvasContext = helpShipCanvas.getContext("2d");
+      drawImage(helpShip[0], new Vec (helpShipCanvas.width-5, helpShipCanvas.height+5).times(.5), 
+        0, helpShipCanvasContext);
+      helpShipCanvasContext.fillStyle = "lightgreen";    
+      helpShipCanvasContext.strokeStyle = "lightgreen";
+      helpShipCanvasContext.fillRect(3, 3, helpShipCanvas.width/4, 3);
+      helpShipCanvasContext.strokeRect(3, 3, helpShipCanvas.width/2.5, 3);
+
       dibujar(canvas);
     }
     
