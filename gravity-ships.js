@@ -375,6 +375,8 @@ let shipTransparentOff = new Image();
 let shipTransparentOn = new Image();
 let shipBurning0 = new Image();
 let shipBurning1 = new Image();
+let imageCounter = 0;
+let imageNumber = 6;
 
 let missiles = [];
 let players = [];
@@ -426,7 +428,6 @@ function start() {
 
     pause = document.querySelector(".pause");
     let configIcon = document.querySelector(".triple");
-    // configIcon.style.cursor = "pointer";
     configIcon.addEventListener("click", () => {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
@@ -444,31 +445,19 @@ function start() {
       }
     });
     
-    shipBurning1.onload = () => {
-      players.push(new Player());
-      players.push(new Player());
+		shipNoBackgroundOff.onload = onLoadCallback;
+		shipNoBackgroundOn.onload = onLoadCallback;
+		shipTransparentOff.onload = onLoadCallback;
+		shipTransparentOn.onload = onLoadCallback;
+		shipBurning0.onload = onLoadCallback;
+		shipBurning1.onload = onLoadCallback;
 
-      languageSelector = document.querySelector(".language");
-      languageSelector.addEventListener("change", event => changeLanguage(event.target.value));
-      let userLang = (navigator.language || navigator.userLanguage).substring(0,2);
-      languageSelector.value = userLang;
-      changeLanguage(userLang);    
-  
-      helpShip = createColorShips("#FF756D");
-      helpShipCanvas = document.querySelector("#shipHelpCanvas");
-      helpShipCanvas.width = helpShip[0].width+20;
-      helpShipCanvas.height = helpShip[0].height+20;
-      helpShipCanvasContext = helpShipCanvas.getContext("2d");
-      drawImage(helpShip[0], new Vec (helpShipCanvas.width-5, helpShipCanvas.height+5).times(.5), 
-        0, helpShipCanvasContext);
-      helpShipCanvasContext.fillStyle = "lightgreen";    
-      helpShipCanvasContext.strokeStyle = "lightgreen";
-      helpShipCanvasContext.fillRect(3, 3, helpShipCanvas.width/4, 3);
-      helpShipCanvasContext.strokeRect(3, 3, helpShipCanvas.width/2.5, 3);
-
-      dibujar(canvas);
-    }
-    
+		function onLoadCallback() {
+			imageCounter++;
+			if (imageCounter < imageNumber) return;
+			init(canvas);			
+		}
+		
     let dirSize = canvasElement.width <= 1600 ? 100 : 150;
 
     shipNoBackgroundOff.src = `./ships/${dirSize}/ship-no-background-off.png`;
@@ -476,9 +465,33 @@ function start() {
     shipTransparentOff.src = `./ships/${dirSize}/ship-transparent-off.png`;
     shipTransparentOn.src = `./ships/${dirSize}/ship-transparent-on.png`;
     shipBurning0.src = `./ships/${dirSize}/ship-burning-0.png`;
-    shipBurning1.src = `./ships/${dirSize}/ship-burning-1.png`;
-    
-  }
+    shipBurning1.src = `./ships/${dirSize}/ship-burning-1.png`;    
+}
+
+function init (canvas) {
+  players.push(new Player());
+  players.push(new Player());
+  
+  languageSelector = document.querySelector(".language");
+  languageSelector.addEventListener("change", event => changeLanguage(event.target.value));
+  let userLang = (navigator.language || navigator.userLanguage).substring(0,2);
+  languageSelector.value = userLang;
+  changeLanguage(userLang);    
+
+	helpShip = createColorShips("#FF756D")[0];
+	helpShipCanvas = document.querySelector("#shipHelpCanvas");
+	helpShipCanvas.width = helpShip.width+20;
+	helpShipCanvas.height = helpShip.height+20;
+	helpShipCanvasContext = helpShipCanvas.getContext("2d");
+	drawImage(helpShip, new Vec (helpShipCanvas.width-5, helpShipCanvas.height+5).times(.5), 
+	0, helpShipCanvasContext);
+	helpShipCanvasContext.fillStyle = "lightgreen";    
+	helpShipCanvasContext.strokeStyle = "lightgreen";
+	helpShipCanvasContext.fillRect(3, 3, helpShipCanvas.width/4, 3);
+	helpShipCanvasContext.strokeRect(3, 3, helpShipCanvas.width/2.5, 3);
+	
+	dibujar(canvas);
+}
 
 let lastTime = null;
 function dibujar(canvas, time) {
