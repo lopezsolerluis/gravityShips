@@ -263,3 +263,36 @@ html, body {
 .close-btn-help:hover {
     color: darkgray;
 }
+#shipHelpCanvas {
+    float: left;
+} 
+#controlHelp {
+    float: left;
+    display: grid;
+    margin: 10px 20px 0px 0px;
+    /* padding-left: 20px; */
+    grid-gap: 3px;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+    "color area1 . trash"
+    "area2 area3 area4 .";   
+    width: auto;
+}
+#controlHelp button {
+    float: right;
+    font-weight: bold;
+    padding: 0;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px black;
+    height: 100%;
+    width: auto;
+    pointer-events: none;
+    cursor: default;
+}
+#controlHelp input {
+    height: 100%;
+    cursor: pointer;
+    box-shadow: 1px 1px 2px black;
+    pointer-events: none;
+    cursor: default;
+}
