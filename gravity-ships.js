@@ -410,13 +410,21 @@ function start() {
     document.querySelector("#no").addEventListener("click", () => confirmDelete.style.display = "none");
 
     helpIcon = document.querySelector(".helpIcon");
+    helpIcon.addEventListener("click", () => helpScreen.style.display = "block");
+    helpScreen = document.querySelector(".helpModal");
+    helpScreen.addEventListener("click", e => {
+      if (e.target == helpScreen) {
+        helpScreen.style.display = "none";
+      }
+    });
+    document.querySelector(".close-btn-help").addEventListener("click", () => helpScreen.style.display = "none");
     
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
 
     pause = document.querySelector(".pause");
     let configIcon = document.querySelector(".triple");
-    configIcon.style.cursor = "pointer";
+    // configIcon.style.cursor = "pointer";
     configIcon.addEventListener("click", () => {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
@@ -582,6 +590,7 @@ function changeLanguage (language) {
       document.querySelector("#confirmShipDelete").innerHTML = "¿<em>Realmente</em> quieres borrar esta nave?";
       document.querySelector("#yes").textContent = "¡Sí!";
       document.querySelector("#no").textContent = "No...";
+      helpIcon.textContent = "ayuda";
       break;
      case "en": // ENGLISH (DEFAULT)
      default:
@@ -591,6 +600,7 @@ function changeLanguage (language) {
       document.querySelector("#confirmShipDelete").innerHTML = "Do you <em>really</em> want to delete this ship?";
       document.querySelector("#yes").textContent = "Yes!";
       document.querySelector("#no").textContent = "No...";
+      helpIcon.textContent = "help";
       break;
   }
 } 

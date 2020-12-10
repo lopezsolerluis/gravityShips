@@ -31,6 +31,7 @@ html, body {
     font-size: 60px;
     padding: 0 8px;
     margin-top: -5px;
+    cursor: pointer;
  }
  .configuration {
      float: right;
@@ -248,5 +249,17 @@ html, body {
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
-    animation-duration: 0.4s
+    animation-duration: 0.4s;
+    background: lightblue;
+    color: indigo;
+}
+.close-btn-help {
+    float: right; 
+    color: gray; 
+    font-size: 24px;  
+    font-weight: bold;
+    cursor: pointer;
+}
+.close-btn-help:hover {
+    color: darkgray;
 }
