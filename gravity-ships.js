@@ -605,6 +605,13 @@ function changeLanguage (language) {
       document.querySelector("#yes").textContent = "¡Sí!";
       document.querySelector("#no").textContent = "No...";
       helpIcon.textContent = "ayuda";
+      document.querySelector("#helpOne").innerHTML = `La nave respeta los principios
+      de la <strong>mecánica newtoniana</strong> y la <strong>gravitación</strong>.`;
+      document.querySelector("#helpTwo").innerHTML = `Sus celdas energéticas se alimentan mediante
+      <strong>paneles solares</strong>: cuanto más cerca se encuentra la nave del Sol, más rápido se cargarán.`;
+      document.querySelector("#helpThree").innerHTML = `Puedes cambiar el <strong>color</strong> de la nave, 
+      sus <strong>teclas</strong> de control e incluso <strong>eliminarla</strong> 
+      haciendo <em>click</em> en los botones correspondientes.`;
       break;
      case "en": // ENGLISH (DEFAULT)
      default:
@@ -615,6 +622,12 @@ function changeLanguage (language) {
       document.querySelector("#yes").textContent = "Yes!";
       document.querySelector("#no").textContent = "No...";
       helpIcon.textContent = "help";
+      document.querySelector("#helpOne").innerHTML = `The ship obeys the principles of 
+      <strong>newtonian mechanics</strong> and <strong>gravitation</strong>.`;
+      document.querySelector("#helpTwo").innerHTML = `Its energy cells get replenished via <strong>solar cells</strong>: 
+      the nearer to the sun the ship is, the faster they get charged.`;
+      document.querySelector("#helpThree").innerHTML = `You can change the <strong>color</strong> of the ship, 
+      its control <strong>keys</strong> or even <strong>delete</strong> it by clicking in the corresponding buttons.`;
       break;
   }
 } 

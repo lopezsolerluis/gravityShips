@@ -245,7 +245,7 @@ html, body {
     padding: 20px; 
     margin: auto; 
     width: 40vw;  
-    font-size: 150%;
+    font-size: 140%;
     -webkit-animation-name: animatetop;
     -webkit-animation-duration: 0.4s;
     animation-name: animatetop;
@@ -279,8 +279,9 @@ html, body {
     "area2 area3 area4 .";   
     width: auto;
 }
-#controlHelp li {
+.helpContent li {
     clear: both;
+    margin-bottom: 20px;
 }
 #controlHelp button , #controlHelp input {
     /* float: right; */
