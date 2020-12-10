@@ -386,7 +386,7 @@ let confirmDelete;
 
 let createShipButton;
 
-let languageSelector;
+let languageSelector, helpIcon;
 
 function start() {
     let canvasElement = document.getElementById("canvas");
@@ -409,6 +409,8 @@ function start() {
     });
     document.querySelector("#no").addEventListener("click", () => confirmDelete.style.display = "none");
 
+    helpIcon = document.querySelector(".helpIcon");
+    
     allShipsElement = document.querySelector(".naves");
     allShipsContainer = document.querySelector(".navesContainer");
 
@@ -419,6 +421,7 @@ function start() {
       paused = !paused;
       document.querySelector(".configuration").classList.toggle("configurationHover");
       languageSelector.classList.toggle("show");
+      helpIcon.classList.toggle("show");
       pause.style.display = paused ? "block" : "none";
     });
 
