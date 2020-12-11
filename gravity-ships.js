@@ -260,22 +260,35 @@ class Player extends Mobile {
       if (this.opacity <= 0 || this.opacity >= 1) this.opacityIncrement *= -1; 
       this.birthTime--;
     }
-    drawImage(ship, this.pos, this.dir, canvas);
+    this.drawOneOrMoreShips(ship, this.pos, this.dir, canvas);
     if (!this.dead) {
       this.drawFuelBar(canvas);
     }
     if (this.dead) {
       canvas.globalAlpha = this.computeLinearOpacity(0, .5, .9);
-      drawImage(shipBurning0, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
+      this.drawOneOrMoreShips(shipBurning0, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
                 this.dir+Math.random()*.02-.01, canvas);
       canvas.globalAlpha = this.computeLinearOpacity(.4, .75, 1);
-      drawImage(shipBurning1, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
+      this.drawOneOrMoreShips(shipBurning1, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
                 this.dir+Math.random()*.02-.01, canvas);                
     }
     if (this.dead || this.birthTime >= -10) {
       canvas.restore();
     }
-  }
+	}
+	drawOneOrMoreShips(imageShip, pos, dir, canvas) {
+		drawImage(imageShip, pos, dir, canvas);
+		if (pos.x < this.radius) {
+			drawImage(imageShip, pos.plus(new Vec(window.innerWidth,0)), dir, canvas);
+		} else if (pos.x > window.innerWidth - this.radius) {
+			drawImage(imageShip, pos.minus(new Vec(window.innerWidth,0)), dir, canvas);
+    }
+    if (pos.y < this.radius) {
+			drawImage(imageShip, pos.plus(new Vec(0,window.innerHeight)), dir, canvas);
+		} else if (pos.y > window.innerHeight - this.radius) {
+			drawImage(imageShip, pos.minus(new Vec(0,window.innerHeight)), dir, canvas);
+		}
+	}
   computeLinearOpacity (xBegin, xMax, xEnd) {
     let x = 1 - this.timeLeft / this.explotionDuration;
     if (x <= xBegin || x >= xEnd) return 0;
