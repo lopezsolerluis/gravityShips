@@ -237,9 +237,9 @@ class Player extends Mobile {
     }
   }
   updateDirection (deltaT) {
-    this.dir += this.angularVelocity * deltaT;
+    this.dir += this.angularVelocity * deltaT * .1;
     if (allKeys[this.keys[1]] || allKeys[this.keys[3]]) {
-      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .000005 * deltaT;
+      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .00005 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
   }
@@ -265,11 +265,11 @@ class Player extends Mobile {
       this.drawFuelBar(canvas);
     }
     if (this.dead) {
-      canvas.globalAlpha = this.computeLinearOpacity(0, .5, .9);
-      this.drawOneOrMoreShips(shipBurning0, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
+      canvas.globalAlpha = this.computeLinearOpacity(0, .5, .75);
+      this.drawOneOrMoreShips(shipBurning0, this.pos.plus(Vec.randomVector(-2,2,-2,2)), 
                 this.dir+Math.random()*.02-.01, canvas);
-      canvas.globalAlpha = this.computeLinearOpacity(.4, .75, 1);
-      this.drawOneOrMoreShips(shipBurning1, this.pos.plus(Vec.randomVector(-3,3,-3,3)), 
+      canvas.globalAlpha = this.computeLinearOpacity(.5, .75, 1);
+      this.drawOneOrMoreShips(shipBurning1, this.pos.plus(Vec.randomVector(-2,2,-2,2)), 
                 this.dir+Math.random()*.02-.01, canvas);                
     }
     if (this.dead || this.birthTime >= -10) {
