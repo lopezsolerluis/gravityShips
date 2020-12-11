@@ -238,7 +238,7 @@ class Player extends Mobile {
   }
   updateDirection (deltaT) {
     this.dir += this.angularVelocity * deltaT * .1;
-    if (allKeys[this.keys[1]] || allKeys[this.keys[3]]) {
+    if (!this.dead && (allKeys[this.keys[1]] || allKeys[this.keys[3]])) {
       this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .00005 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
@@ -306,9 +306,9 @@ class Player extends Mobile {
   move (deltaT) {
     if (!this.birthTime) {
       super.move(deltaT);
+      this.updateDirection(deltaT);  
     }
     if (!this.dead && !this.birthTime) { 
-      this.updateDirection(deltaT);   
       this.updateFuel(deltaT);
       this.shootMissile();
     }
