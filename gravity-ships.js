@@ -239,7 +239,7 @@ class Player extends Mobile {
   updateDirection (deltaT) {
     this.dir += this.angularVelocity * deltaT * .1;
     if (!this.dead && (allKeys[this.keys[1]] || allKeys[this.keys[3]])) {
-      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .00001 * deltaT;
+      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .00003 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
   }
