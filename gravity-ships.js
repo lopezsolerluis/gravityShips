@@ -226,7 +226,7 @@ class Player extends Mobile {
     missiles.forEach( m => {if (m.shipOwner == this) {m.color = this.color} });    
   }
   updateFuel (deltaT) {
-    this.fuel = Math.min( this.fullFuel, this.fuel + 600/Math.pow(this.pos.distance(center),2) * deltaT);
+    this.fuel = Math.min( this.fullFuel, this.fuel + 1000/Math.pow(this.pos.distance(center),2) * deltaT);
   }
   updateVelocity (deltaT) {
     super.updateVelocity(deltaT);
