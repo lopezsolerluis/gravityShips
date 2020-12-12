@@ -232,14 +232,14 @@ class Player extends Mobile {
     super.updateVelocity(deltaT);
     if (allKeys[this.keys[2]] && !this.dead) {
       let dirVersor = new Vec( Math.cos(this.dir), Math.sin(this.dir));
-      this.vel = this.vel.plus(dirVersor.times(.005*deltaT));
+      this.vel = this.vel.plus(dirVersor.times(.001*deltaT));
       this.fuel = Math.max( 0, this.fuel - 1);
     }
   }
   updateDirection (deltaT) {
     this.dir += this.angularVelocity * deltaT * .1;
     if (!this.dead && (allKeys[this.keys[1]] || allKeys[this.keys[3]])) {
-      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .00005 * deltaT;
+      this.angularVelocity += (allKeys[this.keys[3]] - allKeys[this.keys[1]]) * .00001 * deltaT;
       this.fuel = Math.max( 0, this.fuel - 0.1 );
     }
   }

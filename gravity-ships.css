@@ -17,12 +17,12 @@ html, body {
     font-weight: bold;
     text-align: center;
     padding-left: 30px;
-    opacity: .3;
+    opacity: .5;
     transition: all .7s ease-in-out;
 }
 .zoom {
     scale: 1.2;
-    opacity: .8;
+    opacity: .99;
     text-shadow: 1px 1px 18px white, 1px -1px 18px white, 
                 -1px 1px 18px white,-1px -1px 18px white;
 }
